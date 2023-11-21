@@ -2,8 +2,8 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
-import CustomInput from '../CustomInput'
-import CustomButton from '../CustomButton'
+import CustomInput from '../FormElements/CustomInput'
+import CustomButton from '../FormElements/CustomButton'
 
 const LoginForm = () => {
     const router = useRouter();

@@ -1,9 +1,9 @@
 "use client"
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import CustomInput from '../CustomInput';
-import CustomTextarea from '../CustomTextarea';
-import CustomButton from '../CustomButton';
+import CustomInput from '../FormElements/CustomInput';
+import CustomTextarea from '../FormElements/CustomTextarea';
+import CustomButton from '../FormElements/CustomButton';
 
 
 const ContactForm = () => {

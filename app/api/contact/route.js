@@ -10,7 +10,6 @@ export const POST = async (req) => {
             userMessage
         });
         await newMessage.save()
-        console.log("saved");
         return new Response(JSON.stringify(newMessage), { status: 200 });
     } catch (error) {
         return new Response(JSON.stringify({

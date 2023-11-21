@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 
-import CustomInput from '../CustomInput'
-import CustomButton from '../CustomButton'
+import CustomInput from '../FormElements/CustomInput'
+import CustomButton from '../FormElements/CustomButton'
 
 const SignupForm = () => {
     const router = useRouter();
@@ -80,9 +80,9 @@ const SignupForm = () => {
             const responce = await fetch("/api/signup", {
                 method: "POST",
                 body: {
-                    userName: userDetails?.userName,
+                    userName: userDetails?.userName.replace(" ", "").toLowerCase(),
                     userEmail: userDetails?.userEmail,
-                    userNumber: userDetails?.userNumber,
+                    userPhone: userDetails?.userNumber,
                     userPassword: userDetails?.userPassword
                 }
             })
