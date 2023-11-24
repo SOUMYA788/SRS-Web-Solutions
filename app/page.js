@@ -5,6 +5,11 @@ import { BiRevision, BiSupport, BiLogoReact, BiLogoWordpress } from 'react-icons
 import Card from '@/components/card'
 import CustomHeadding from '@/components/CustomHeadding'
 
+export const metadata = {
+  title: "SRS WEB SOLUTIONS",
+  description: "India's number one web solutions.",
+}
+
 export default function Home() {
   const homeInfo = [
     {

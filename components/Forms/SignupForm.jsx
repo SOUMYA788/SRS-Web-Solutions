@@ -50,6 +50,7 @@ const SignupForm = () => {
         e.preventDefault();
         setBtnDisabled(true)
         try {
+            // validate username
             if (userDetails?.userName.replace(" ", "").length < 5) {
                 setFormError({
                     ...formError,
@@ -76,15 +77,24 @@ const SignupForm = () => {
                 return
             }
 
+            // validate password
+            if (userDetails?.userPassword.replace(" ", "").length < 5) {
+                setFormError({
+                    ...formError,
+                    userPassword: "Password Should be Atleast 5 Charecters Long"
+                })
+                return
+            }
+
             // send and save data to database
-            const responce = await fetch("/api/signup", {
+            const responce = await fetch("/api/user/signup", {
                 method: "POST",
-                body: {
+                body: JSON.stringify({
                     userName: userDetails?.userName.replace(" ", "").toLowerCase(),
                     userEmail: userDetails?.userEmail,
                     userPhone: userDetails?.userNumber,
                     userPassword: userDetails?.userPassword
-                }
+                })
             })
 
             // as soon as login token receives move the user to home page...
@@ -92,9 +102,10 @@ const SignupForm = () => {
                 console.log(responce);
                 router.push("/")
             }
-
         } catch (error) {
             console.log(error);
+        } finally {
+            setBtnDisabled(false)
         }
     }
 

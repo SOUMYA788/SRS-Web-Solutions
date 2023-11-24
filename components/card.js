@@ -1,10 +1,5 @@
 import React from 'react'
-/**
- * 
- * @param {Array} contentArray is an array of content
- * @param {string} text_center boolean value, decide text will be center or not
- * @returns JSX
- */
+
 const Card = ({ contentArray, cardHeight, text_center }) => {
     const createMarkup = (c) => {
         return { __html: c }
