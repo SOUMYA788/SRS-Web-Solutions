@@ -44,7 +44,7 @@ export const POST = async (req) => {
             message: "logged in! welcome to your account."
         }, { status: 200 })
 
-        successResponse.cookies.set("jwtToken", jwtToken, {httpOnly:true});
+        successResponse.cookies.set(process.env.TOKEN_COOKIE_KEY, jwtToken, {httpOnly:true});
 
         return successResponse;
 

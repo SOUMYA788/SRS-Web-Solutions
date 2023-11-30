@@ -5,8 +5,7 @@ import React, { useEffect, useState } from 'react'
 import CustomInput from '../FormElements/CustomInput'
 import CustomButton from '../FormElements/CustomButton'
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
     const router = useRouter();
@@ -50,20 +49,41 @@ const LoginForm = () => {
                 })
             })
 
-            console.log("featchResponse is below");
-            console.log(featchResponse);
 
             if (featchResponse.ok) {
                 // Valid User
-                console.log("Responce Success");
-                router.push("/")
+                toast.success('Login Succesfully', {
+                    position: "bottom-center",
+                    autoClose: 500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "light",
+                });
+                setTimeout(() => {
+                    router.push("/")
+                }, 700);
             } else {
                 console.log("Responce Fail");
+                setLoginDetails({
+                    loginEmail: "",
+                    loginPassword: ""
+                })
+                toast.error('Login Faild', {
+                    position: "bottom-center",
+                    autoClose: 500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "light",
+                });
             }
 
 
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
         } finally {
             setBtnDisabled(false)
             setProcessing(false)

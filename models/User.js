@@ -1,4 +1,4 @@
-import {Schema, model, models } from "mongoose"
+import mongoose,{Schema, model, models } from "mongoose"
 
 const UserSchema = new Schema({
     userName:{
@@ -9,6 +9,12 @@ const UserSchema = new Schema({
         type:String, 
         require:[true, "Invalid Email ID"],
         unique:true,
+    },
+    userProfilePicture:{
+        type:String
+    },
+    userProfileColor:{
+        type:String
     },
     userPhone:{
         type:String,
@@ -23,6 +29,7 @@ const UserSchema = new Schema({
         default:"user"
     }
 }, {timestamps:true})
-
-const UserModel = models.UserModel || model("UserModel", UserSchema)
+console.log("models is the right side", models);
+mongoose.models = {}
+const UserModel = model("UserModel", UserSchema)
 export default UserModel;

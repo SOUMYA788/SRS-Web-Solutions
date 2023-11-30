@@ -3,7 +3,14 @@ import UserModel from "@/models/User";
 import bcryptjs from "bcrypt"
 
 export const POST = async (req) => {
-    const { userName, userEmail, userPhone, userPassword } = await req.json();
+    const { userName, userEmail, userPhone, userPassword, userImage, userColor } = await req.json();
+
+    const generateProfileColor = () => {
+        const colors = ["red", "blue", "yellow", "pink", "teal", "orange", "cyan"];
+        const colorIndex = Math.floor(Math.random() * colors.length + 1)
+        const colorName = colors[colorIndex];
+        return colorName;
+    }
 
     // varify all those req stuffs...
     if(!userName.length || !userEmail.length || !userPhone.length || !userPassword.length){
@@ -30,8 +37,10 @@ export const POST = async (req) => {
         const salt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(userPassword, salt);
 
-        const newUser = new UserModel({ userName, userEmail, userPhone, userPassword: hashedPassword })
-        console.log("newUser", newUser);
+        // user Profile Color and Profile Picture
+        const userProfileColor = generateProfileColor();
+
+        const newUser = new UserModel({ userName, userEmail, userProfileColor, userPhone, userPassword: hashedPassword })
 
         const savedUser = await newUser.save()
 

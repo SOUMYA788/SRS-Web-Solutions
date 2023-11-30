@@ -100,7 +100,20 @@ const SignupForm = () => {
             // as soon as login token receives move the user to home page...
             if (responce.ok) {
                 console.log(responce);
-                router.push("/")
+                toast.success('Signup Succesfully', {
+                    position: "bottom-center",
+                    autoClose: 500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: "slide",
+                });
+                setTimeout(() => {
+                    router.push("/login")
+                }, 700);
             }
         } catch (error) {
             console.log(error);

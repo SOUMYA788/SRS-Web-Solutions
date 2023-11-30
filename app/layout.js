@@ -5,6 +5,8 @@ import Header from '@/components/header'
 import './globals.css'
 import Footer from '@/components/footer'
 import LoadingBar from 'react-top-loading-bar'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // export const metadata = {
 //   title: "SRS WEB SOLUTIONS",
@@ -27,14 +29,28 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <main className="w-full container mx-auto min-h-full">
-        <LoadingBar
-        color='#f11946'
-        progress={progress}
-        onLoaderFinished={() => setProgress(0)}
-      />
-          <Header/>
+          <LoadingBar
+            color='#f11946'
+            progress={progress}
+            onLoaderFinished={() => setProgress(0)}
+          />
+
+          <ToastContainer
+            position="bottom-center"
+            autoClose={500}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick={true}
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+
+          <Header />
           {children}
-          <Footer/>
+          <Footer />
         </main>
       </body>
     </html>

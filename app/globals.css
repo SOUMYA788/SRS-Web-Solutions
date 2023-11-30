@@ -10,3 +10,31 @@ body {
   padding: 0 3px;
   background-color: rgba(241, 245, 249, 1);
 }
+
+.red{
+  background-color:red;
+  @apply bg-red-500 
+}
+
+.green{
+  @apply bg-green-500
+}
+
+.blue{
+  @apply bg-blue-500
+}
+.yellow{
+  @apply bg-yellow-500
+}
+.pink{
+  @apply bg-pink-500
+}
+.teal{
+  @apply bg-teal-500
+}
+.orange{
+  @apply bg-orange-500
+}
+.cyan{
+  @apply bg-cyan-500
+}
