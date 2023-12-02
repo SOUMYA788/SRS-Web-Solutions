@@ -15,7 +15,7 @@ const Footer = () => {
                         <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">NAVIGATION</h2>
                         <nav className="list-none mb-10">
                             <li className='my-2'>
-                                <Link href="/home" className="text-gray-600 hover:text-gray-800 border-none px-2 py-1">HOME</Link>
+                                <Link href="/" className="text-gray-600 hover:text-gray-800 border-none px-2 py-1">HOME</Link>
                             </li>
                             <li className='my-2'>
                                 <Link href="/about" className="text-gray-600 hover:text-gray-800 border-none px-2 py-1">ABOUT</Link>

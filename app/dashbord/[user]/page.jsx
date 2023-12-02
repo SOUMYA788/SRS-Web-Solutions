@@ -7,6 +7,7 @@ import React from 'react'
 
 const Dashboard = async ({ params }) => {
     const userId = params.user;
+    
     const userData = async () => {
         try {
             await dbConnection();
@@ -18,21 +19,31 @@ const Dashboard = async ({ params }) => {
             }
 
             return validUser;
-
         } catch (error) {
             console.log(error)
         }
     }
+
     const user = await userData();
 
-    console.log("user is => ", user);
+    // async function userData() {
+    //     try {
+    //         const response = await fetch("api/user/");
+    //         if (!response.ok) {
+    //             throw new Error("Response Faild");
+    //         }
+    //         user = response.json();
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // }
 
-
+    console.log("user is => ", user ? user : "user Not Found");
 
     return (
         <div className='w-full flex flex-row justify-between gap-2'>
 
-            <DashboardNav userId={user?._id}/>
+            {user?._id && <DashboardNav userId={user?._id} />}
 
             <section className='w-full flex flex-row px-2 py-3 gap-2 relative'>
 
