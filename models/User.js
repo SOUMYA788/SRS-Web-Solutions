@@ -27,6 +27,10 @@ const UserSchema = new Schema({
     role:{
         type:String,
         default:"user"
+    },
+    orders:{
+        type:Array,
+        default:[]
     }
 }, {timestamps:true})
 console.log("models is the right side", models);

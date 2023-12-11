@@ -4,10 +4,13 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import CustomInput from '../FormElements/CustomInput'
 import CustomButton from '../FormElements/CustomButton'
-
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { userLoggedIn } from '@/Redux/slices/userSlice';
+
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
     const router = useRouter();
     const [loginDetails, setLoginDetails] = useState({
         loginEmail: "",
@@ -61,15 +64,21 @@ const LoginForm = () => {
                     draggable: true,
                     theme: "light",
                 });
+
+                dispatch(userLoggedIn(true))
+
                 setTimeout(() => {
                     router.push("/")
                 }, 700);
             } else {
                 console.log("Responce Fail");
+                dispatch(userLoggedIn(false))
+
                 setLoginDetails({
                     loginEmail: "",
                     loginPassword: ""
                 })
+
                 toast.error('Login Faild', {
                     position: "bottom-center",
                     autoClose: 500,

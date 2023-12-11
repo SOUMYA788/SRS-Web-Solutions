@@ -7,17 +7,14 @@ import React from 'react'
 
 const Dashboard = async ({ params }) => {
     const userId = params.user;
-    
+
     const userData = async () => {
         try {
             await dbConnection();
-
             const validUser = await UserModel.findOne({ _id: userId }).select("-userPassword");
-
             if (!validUser) {
                 throw new Error("Invalid User")
             }
-
             return validUser;
         } catch (error) {
             console.log(error)
@@ -26,27 +23,10 @@ const Dashboard = async ({ params }) => {
 
     const user = await userData();
 
-    // async function userData() {
-    //     try {
-    //         const response = await fetch("api/user/");
-    //         if (!response.ok) {
-    //             throw new Error("Response Faild");
-    //         }
-    //         user = response.json();
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // }
-
-    console.log("user is => ", user ? user : "user Not Found");
 
     return (
-        <div className='w-full flex flex-row justify-between gap-2'>
-
-            {user?._id && <DashboardNav userId={user?._id} />}
-
+        <>
             <section className='w-full flex flex-row px-2 py-3 gap-2 relative'>
-
                 <div className="forgroundImg bg-blue-500 w-full h-64 absolute top-0 left-0 -z-10 rounded-md">
                     {
                         user?.userProfileBackground && <Image src={`${user?.userProfileBackground}`} alt="user" width={50} height={50} className="w-full h-full object-cover" />
@@ -79,7 +59,7 @@ const Dashboard = async ({ params }) => {
 
                 </div>
             </section>
-        </div>
+        </>
     )
 }
 

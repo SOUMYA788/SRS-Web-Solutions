@@ -1,7 +1,7 @@
 import dbConnection from "@/middleware/dbConnection"
 import { getTokenData } from "@/middleware/tokendata"
 import UserModel from "@/models/User"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 
 export const GET = async (request) => {
     try {

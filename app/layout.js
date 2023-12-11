@@ -4,20 +4,20 @@ import Footer from '@/components/footer'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomLoadingBar from '@/components/CustomLoadingBar'
+import StoreProvider from '@/Providers/StoreProvider';
 
 export const metadata = {
   title: "SRS WEB SOLUTIONS",
-   description: "India's number one web solutions.",
+  description: "India's number one web developer organization.",
 }
 
 export default function RootLayout({ children }) {
-
   return (
-      <html lang="en">
-        <body>
+    <html lang="en">
+      <body>
         <main className="w-full container mx-auto">
-          
-          <CustomLoadingBar/>
+
+          <CustomLoadingBar />
 
           <ToastContainer
             position="bottom-center"
@@ -32,10 +32,12 @@ export default function RootLayout({ children }) {
             theme="light"
           />
 
-          <Header />
-          {children}
-          <Footer />
-
+          <StoreProvider>
+            <Header />
+            {children}
+            <Footer />
+          </StoreProvider>
+          
         </main>
       </body>
     </html>
