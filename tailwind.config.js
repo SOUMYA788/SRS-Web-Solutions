@@ -6,12 +6,13 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+
     extend: {
       backgroundImage: {
         animation: {
           slideup: 'slideup 1s 1',
         },
-        keyframes:{
+        keyframes: {
           slideup: {
             '0%': {
               transform: 'translateY(10%)',
@@ -27,6 +28,15 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+    },
+    minHeight: {
+      0: '0px',
+      '48': '12rem',
+      full: '100%',
+      screen: '100vh',
+      min: 'min-content',
+      max: 'max-content',
+      fit: 'fit-content',
     },
   },
   plugins: [],

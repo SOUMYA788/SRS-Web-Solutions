@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CustomButton from '../FormElements/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { assignUser } from '@/Redux/slices/userSlice'
@@ -14,14 +14,12 @@ import { BiCloudUpload } from 'react-icons/bi'
 
 const DashboardForm = () => {
     // name, email, phone, profileColor, profileBackground
-    const user = useSelector(state => state.user.value)
-
     const dispatch = useDispatch()
     const router = useRouter()
 
     const [formProcessing, setFormProcessing] = useState(false);
     const [formDisabled, setFormDisabled] = useState(true);
-    const [userDetails, setUserDetails] = useState(user);
+    const [userDetails, setUserDetails] = useState(null);
     const [detailError, setDetailError] = useState({})
 
     const setError = (errorKey, errorValue) => {
@@ -160,22 +158,30 @@ const DashboardForm = () => {
         setFormDisabled((value) => !value);
     }
 
+    useEffect(() => {
+        fetch("/api/user")
+            .then(response => response.json())
+            .then(userInfo => setUserDetails(userInfo?.userInfo))
+            .catch(error => console.log(error.message))
+    }, [])
+
+
     return (
         <>
             <div className="w-full flex flex-row justify-between items-center px-2 py-1">
                 <h2 className='text-center text-2xl font-semibold p-2 text-slate-800 tracking-wide'>
                     DETAILS
                 </h2>
-                <button type="button" className={`border ${formDisabled ? "bg-transparent capitalize border-green-500 font-semibold focus:outline-green-700 focus:bg-green-500 hover:border-green-700 hover:bg-green-500" : "bg-red-500 tracking-wider uppercase border-red-700 focus:outline-red-700 focus:rounded-full hover:rounded-sm"}  px-4 py-2 text-xs transition-colors`} onClick={changeEditMode}>
+                <button type="button" className={`border-2 ${formDisabled ? "bg-transparent capitalize border-blue-500 font-semibold focus:outline-blue-700 focus:bg-blue-500 hover:border-blue-700 hover:bg-blue-500 focus:text-white hover:text-white tracking-wider" : "bg-red-500 tracking-wider uppercase border-red-700 focus:outline-red-700 focus:rounded-full hover:rounded-sm"}  px-4 py-2 text-xs transition-colors`} onClick={changeEditMode}>
                     {formDisabled ? "edit profile" : "cancel"}
                 </button>
             </div>
 
             <form action="" className='flex w-full sm:flex-row flex-col mx-auto px-8 border-2 border-slate-200 rounded-sm mt-3 gap-3 flex-wrap'>
 
-                <div className="w-full sm:w-48">
+                <div className="w-full sm:w-48 sm:min-h-48">
                     <label htmlFor="userProfilePicture" className="w-full h-full leading-7 text-sm text-gray-600">
-                        <div className="w-full bg-slate-200 shadow shadow-slate-600 border-2 border-slate-300 rounded-md overflow-hidden flex justify-center items-center text-4xl p-1">
+                        <div className="w-full h-full bg-slate-200 shadow shadow-slate-600 border-2 border-slate-300 rounded-md overflow-hidden flex justify-center items-center text-4xl p-1">
                             <input type="file" name="userProfilePicture" id="userProfilePicture" onChange={formImageOnChange} className="hidden" disabled={formDisabled} accept=".jpeg, .png, .jpg" />
                             {
                                 userDetails?.userProfilePicture ? <Image src={`${userDetails?.userProfilePicture}`} alt="user" width={50} height={50} className="w-full object-contain rounded-md" /> : <BiCloudUpload />

@@ -55,7 +55,7 @@ const HeaderUserCorner = () => {
                 draggable: true,
                 theme: "light",
             });
-        }finally{
+        } finally {
             setLogoutProcess(false);
             setIconHover(false);
         }
@@ -112,7 +112,7 @@ const HeaderUserCorner = () => {
 
                         {user?.value?.userEmail && <p className='text-center text-gray-400 text-xs mb-3'> {user?.value?.userEmail} </p>}
 
-                        <Link href={`/dashboard/${user?.value?._id}`} className='text-gray-600 text-xs p-1 my-1 cursor-pointer capitalize tracking-wider' onClick={() => setIconHover(false)}>dashbord</Link>
+                        <Link href={`/${user?.value?.role === "admin" ? "admin" : "dashboard"}/${user?.value?._id}/`} className='text-gray-600 text-xs p-1 my-1 cursor-pointer capitalize tracking-wider' onClick={() => setIconHover(false)}>dashbord</Link>
 
                         <button type="button" disabled={logoutProcess} className='w-full text-white font-semibold text-xs cursor-pointer text-center bg-red-500 mx-auto px-2 py-1 mt-3 uppercase tracking-wider disabled:opacity-50' onClick={logout}>{logoutProcess ? "Processing" : "logout"}</button>
                     </div>

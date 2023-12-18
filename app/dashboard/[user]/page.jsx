@@ -3,13 +3,14 @@ import { getUserData } from '@/utils/getUserData';
 import Image from 'next/image';
 import { cookies } from "next/headers"
 import React from 'react'
+import { UserProfile } from '@/components/cards/UserProfile';
 
 const Dashboard = async () => {
     const cookiesStore = cookies();
     const stringifyUser = await getUserData(null, cookiesStore);
     const user = stringifyUser ? JSON.parse(stringifyUser) : null
 
-    if(!user) return <h2 className="w-full text-center font-semibold">Please refresh the browser or login in again.</h2>
+    if (!user) return <h2 className="w-full text-center font-semibold">Please refresh the browser or login in again.</h2>
 
     return (
         <>
@@ -22,7 +23,7 @@ const Dashboard = async () => {
 
                 <div className='w-full flex flex-wrap flex-col md:flex-row-reverse justify-between gap-5 mt-44'>
 
-                    <div className="w-full h-fit px-2 py-5 md:w-[300px] bg-slate-200 bg-opacity-60 border-slate-400 shadow-md border-2 rounded-lg relative flex flex-col items-center">
+                    {/* <div className="w-full h-fit px-2 py-5 md:w-[300px] bg-slate-200 bg-opacity-60 border-slate-400 shadow-md border-2 rounded-lg relative flex flex-col items-center">
                         {user?.userProfileColor && <div tabIndex={0} className={`w-20 h-20 overflow-hidden rounded-full m-auto ${user?.userProfileColor} border-2 border-slate-600 cursor-pointer absolute -top-8`}>
                             {
                                 user?.userProfilePicture && <Image src={`${user?.userProfilePicture}`} alt="user" width={50} height={50} className="w-full h-full object-contain rounded-full" />
@@ -34,7 +35,9 @@ const Dashboard = async () => {
                             <h2 className='text-center text-sm mt-1'>{user?.userPhone || ""}</h2>
                             <h2 className='text-center text-sm mt-1'> Last Modified: {new Date(user?.updatedAt).toDateString() || ""}</h2>
                         </div>
-                    </div>
+                    </div> */}
+
+                    {/* <UserProfile user={user} /> */}
 
                     <div className='w-full flex-1 bg-slate-200 bg-opacity-60 border-slate-400 border-2 md:shadow-md rounded-lg p-2 h-fit'>
                         {/* USER INFORMATION EDITING FORM */}
