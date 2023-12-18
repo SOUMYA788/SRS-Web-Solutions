@@ -3,7 +3,7 @@ import UserModel from "@/models/User";
 import bcryptjs from "bcrypt"
 
 export const POST = async (req) => {
-    const { userName, userEmail, userPhone, userPassword, userImage, userColor } = await req.json();
+    const { userName, userEmail, userPhone, userPassword, role } = await req.json();
 
     const generateProfileColor = () => {
         const colors = ["red", "blue", "yellow", "pink", "teal", "orange", "cyan"];
@@ -29,7 +29,7 @@ export const POST = async (req) => {
         if (userExist) {
             return new Response(JSON.stringify({
                 success: false,
-                message: "Account Already Exist"
+                message: "Account Already Exist With Same Email Id"
             }), { status: 400 });
         }
 
@@ -39,8 +39,9 @@ export const POST = async (req) => {
 
         // user Profile Color and Profile Picture
         const userProfileColor = generateProfileColor();
+        const userProfileBackgroundColor = generateProfileColor();
 
-        const newUser = new UserModel({ userName, userEmail, userProfileColor, userPhone, userPassword: hashedPassword })
+        const newUser = new UserModel({ userName, userEmail, userProfileColor, userProfileBackgroundColor, userPhone, userPassword: hashedPassword, role })
 
         const savedUser = await newUser.save()
 

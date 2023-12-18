@@ -10,12 +10,23 @@ const UserSchema = new Schema({
         require:[true, "Invalid Email ID"],
         unique:true,
     },
+
     userProfilePicture:{
         type:String
     },
+
+    userProfileBackgroundPicture:{
+        type:String
+    },
+
     userProfileColor:{
         type:String
     },
+
+    userProfileBackgroundColor:{
+        type:String
+    },
+    
     userPhone:{
         type:String,
         require: [true, "Invalid Phone Number"]
@@ -33,7 +44,7 @@ const UserSchema = new Schema({
         default:[]
     }
 }, {timestamps:true})
-console.log("models is the right side", models);
+
 mongoose.models = {}
 const UserModel = model("UserModel", UserSchema)
-export default UserModel;
+export default UserModel;   

@@ -9,9 +9,10 @@ import { useDispatch } from 'react-redux';
 import { userLoggedIn } from '@/Redux/slices/userSlice';
 
 
-const LoginForm = () => {
+const LoginForm = (adminForm) => {
     const dispatch = useDispatch();
     const router = useRouter();
+
     const [loginDetails, setLoginDetails] = useState({
         loginEmail: "",
         loginPassword: ""
@@ -54,6 +55,8 @@ const LoginForm = () => {
 
 
             if (featchResponse.ok) {
+                const {userId} = await featchResponse.json();
+                console.log("response from login from for admin", userId);
                 // Valid User
                 toast.success('Login Succesfully', {
                     position: "bottom-center",
@@ -68,7 +71,7 @@ const LoginForm = () => {
                 dispatch(userLoggedIn(true))
 
                 setTimeout(() => {
-                    router.push("/")
+                    router.push(adminForm ? `/admin/${userId}` : "/")
                 }, 700);
             } else {
                 console.log("Responce Fail");
@@ -118,9 +121,9 @@ const LoginForm = () => {
 
                 <CustomButton btnType="submit" btnName="submit" btnDisabled={btnDisabled} btnOnClick={clickSubmit} formProcessing={processing} />
 
-                <p className="mt-2 text-center">Need a new account! <Link href="/signup" className="font-semibold text-black border-none p-1">signup</Link> here.</p>
+                <p className="mt-2 text-center">Need a new account! <Link href={adminForm ? "/admin/signup" : "/signup"} className="font-semibold text-black border-none p-1">signup</Link> here.</p>
 
-                <p className="mt-1 text-center"><Link href="/forgetpassword" className="font-semibold text-black border-none p-1">Forget</Link> Your Password!</p>
+                <p className="mt-1 text-center"><Link href={adminForm ? "/admin/forgetpassword" : "/forgetpassword"} className="font-semibold text-black border-none p-1">Forget</Link> Your Password!</p>
             </form>
         </>
     )

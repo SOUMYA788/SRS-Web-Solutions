@@ -1,36 +1,21 @@
-import dbConnection from "@/middleware/dbConnection"
-import { getTokenData } from "@/middleware/tokendata"
-import UserModel from "@/models/User"
 import { NextResponse } from "next/server"
+import { getUserData } from "@/utils/getUserData"
 
-export const GET = async (request) => {
+export const GET = async (req) => {
     try {
-        await dbConnection();
-
-        const tokenID = await getTokenData(request)
-
-        if (!tokenID) {
-            return NextResponse.json({
-                success: false,
-                message: "Invalid Token ID"
-            }, { status: 400 })
-        }
-
-        const validUser = await UserModel.findOne({ _id: tokenID }).select("-userPassword");
-
-        console.log("user route: User Found");
+        const validUser = await getUserData(req, null);
 
         if (!validUser) {
             return NextResponse.json({
                 success: false,
-                message: "Invalid User"
+                message: "Please refresh the browser or login again"
             }, { status: 400 })
         }
 
         return NextResponse.json({
             success: true,
             message: "user found",
-            userInfo: validUser
+            userInfo: JSON.parse(validUser)
         }, { status: 200 })
 
     } catch (error) {
@@ -40,5 +25,4 @@ export const GET = async (request) => {
             error: JSON.parse(error.message)
         }, { status: 500 })
     }
-
 }

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link'
 import HeaderUserCorner from '@/components/HeaderUserCorner';
+import NavLink from './NavLink';
 
 const Header = () => {
     return (
@@ -11,13 +12,23 @@ const Header = () => {
             </Link>
 
             <nav className=" flex flex-1 flex-wrap items-center justify-center gap-5">
-                <Link href="/" className="capitalize cursor-pointer font-semibold hover:text-black ~border-none border-slate-500 px-2 py-1">home</Link>
-                <Link href="/about" className="capitalize cursor-pointer font-semibold hover:text-black  border-none px-2 py-1">about</Link>
-                <Link href="/contact" className="capitalize cursor-pointer font-semibold hover:text-black border-none px-2 py-1">contact</Link>
+
+                <NavLink navRef="/" navLinkClass="capitalize cursor-pointer font-semibold hover:text-black border-slate-500 px-2 py-1" activeNavClass="border-b-2">
+                    home
+                </NavLink>
+
+                <NavLink navRef="/about" navLinkClass="capitalize cursor-pointer font-semibold hover:text-black border-slate-500 px-2 py-1" activeNavClass="border-b-2">
+                    about
+                </NavLink>
+
+                <NavLink navRef="/contact" navLinkClass="capitalize cursor-pointer font-semibold hover:text-black border-slate-500 px-2 py-1" activeNavClass="border-b-2">
+                    contact
+                </NavLink>
 
                 <div className="mx-auto md:ml-auto md:mr-0">
                     <HeaderUserCorner />
                 </div>
+                    
             </nav>
         </header>
     )

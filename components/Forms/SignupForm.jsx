@@ -1,19 +1,22 @@
 "use client"
+
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 
 import CustomInput from '../FormElements/CustomInput'
 import CustomButton from '../FormElements/CustomButton'
+import { toast } from 'react-toastify';
 
-const SignupForm = () => {
+const SignupForm = ({ adminForm }) => {
     const router = useRouter();
 
     const [userDetails, setUserDetails] = useState({
         userName: "",
         userEmail: "",
         userNumber: "",
-        userPassword: ""
+        userPassword: "",
+        role: adminForm ? "admin" : "user"
     })
 
     const [formError, setFormError] = useState({
@@ -87,36 +90,58 @@ const SignupForm = () => {
             }
 
             // send and save data to database
-            const responce = await fetch("/api/user/signup", {
+            const response = await fetch("/api/user/signup", {
                 method: "POST",
                 body: JSON.stringify({
                     userName: userDetails?.userName.replace(" ", "").toLowerCase(),
                     userEmail: userDetails?.userEmail,
                     userPhone: userDetails?.userNumber,
-                    userPassword: userDetails?.userPassword
+                    userPassword: userDetails?.userPassword,
+                    role: userDetails?.role
                 })
             })
 
-            // as soon as login token receives move the user to home page...
-            if (responce.ok) {
-                console.log(responce);
-                toast.success('Signup Succesfully', {
-                    position: "bottom-center",
-                    autoClose: 500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    transition: "slide",
-                });
-                setTimeout(() => {
-                    router.push("/login")
-                }, 700);
+            if (!response.ok) {
+                const { message } = await response.json();
+                throw new Error(message);
             }
+
+            // as soon as login token receives move the user to home page...
+
+            console.log(response);
+            toast.success('Signup Succesfully', {
+                position: "bottom-center",
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+            setTimeout(() => {
+                router.push(adminForm ? "/admin/login" : "/login")
+            }, 700);
+
         } catch (error) {
-            console.log(error);
+            setUserDetails({
+                userName: "",
+                userEmail: "",
+                userNumber: "",
+                userPassword: "",
+                role: adminForm ? "admin" : "user"
+            })
+            toast.error(error.message, {
+                position: "bottom-center",
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         } finally {
             setBtnDisabled(false)
         }
@@ -132,11 +157,11 @@ const SignupForm = () => {
 
             <CustomInput inputType="password" inputName="userPassword" inputPlaceHolder="Enter Your Password" inputValue={userDetails?.userPassword} inputOnChange={inputOnChange} inputError={formError?.userPassword} />
 
-            <CustomButton btnType="submit" btnName="submit" btnDisabled={btnDisabled} btnOnClick={clickSubmit} />
+            <CustomButton btnType="submit" btnName="submit" btnDisabled={btnDisabled} formProcessing={btnDisabled} btnOnClick={clickSubmit} />
 
-            <p className="mt-2 text-center">Already signup! <Link href="/login" className="font-semibold text-black border-none p-1">login</Link> here.</p>
+            <p className="mt-2 text-center">Already signup! <Link href={adminForm ? "/admin/login" : "/login"} className="font-semibold text-black border-none p-1">login</Link> here.</p>
 
-            <p className="mt-1 text-center"><Link href="/forgetpassword" className="font-semibold text-black border-none p-1">Forget</Link> Your Password!</p>
+            <p className="mt-1 text-center"><Link href={adminForm ? "/admin/forgetpassword" : "/forgetpassword"} className="font-semibold text-black border-none p-1">Forget</Link> Your Password!</p>
         </form>
     )
 }

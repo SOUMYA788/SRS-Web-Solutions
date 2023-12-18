@@ -17,7 +17,7 @@ export const POST = async (req) => {
                 error: "Please Enter Valid Credentials"
             }), { status: 400 })
         }
-
+ 
         const userHashPassword = await accountInfo.userPassword;
 
         const passwordMatch = await bcryptjs.compare(loginPassword, userHashPassword)
@@ -41,7 +41,8 @@ export const POST = async (req) => {
         
         const successResponse =  NextResponse.json({
             success: true,
-            message: "logged in! welcome to your account."
+            message: "logged in! welcome to your account.",
+            userId: accountInfo._id.toString()
         }, { status: 200 })
 
         successResponse.cookies.set(process.env.TOKEN_COOKIE_KEY, jwtToken, {httpOnly:true});

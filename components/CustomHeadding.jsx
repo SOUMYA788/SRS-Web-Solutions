@@ -1,9 +1,9 @@
 import React from 'react'
 
-const CustomHeadding = ({headdingTitle}) => {
+const CustomHeadding = ({headdingTitle, useFor}) => {
     return (
         <>
-            <h2 className="m-4 mb-0 text-3xl font-bold uppercase text-center text-gray-600">
+            <h2 className={`m-4 mb-0 text-3xl font-bold uppercase text-center text-gray-600 ${useFor === "admin" ? "italic" : ""}`}>
                 {headdingTitle}
             </h2>
 
