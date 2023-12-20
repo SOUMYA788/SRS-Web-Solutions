@@ -1,42 +1,25 @@
-import bcryptjs from "bcrypt"
-import dbConnection from "@/middleware/dbConnection";
 import UserModel from "@/models/User";
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
     // getting all information from form...
-    const { loginEmail, loginPassword } = await req.json();
+    const { loginSecreat } = await req.json();
+    const unauthorisedMessage = "You are not authorised to access this data!"
 
     try {
-        // trying to connect to database...
-        await dbConnection();
+        // If Login Secreat not matched, means user may be a hacker.
+        if (loginSecreat !== process.env.LOGIN_SECREAT) { throw new Error(unauthorisedMessage) }
 
-        // we are connected to database, now find user from database...
-        const accountInfo = await UserModel.findOne({ userEmail: loginEmail })
+        // getting userId from cookie jwt token 
+        const userId = await getTokenData(req, null);
 
-        // if account not found that means user may be a hacker
-        if (!accountInfo) {
-            return new Response(JSON.stringify({
-                success: false,
-                error: "Please Enter Valid Credentials"
-            }), { status: 400 })
-        }
+        // checking that user is valid or not
+        const validUser = await UserModel.findOne({ _id: userId }).select("-userPassword");
 
-        //getting user's hash password from database...
-        const userHashPassword = await accountInfo.userPassword;
+        // if not valid then throw error
+        if (!validUser) { throw new Error(unauthorisedMessage) }
 
-        // Matching user password to database password...
-        const passwordMatch = await bcryptjs.compare(loginPassword, userHashPassword)
-
-        // if password not matched, user may be a hacker...
-        if (!passwordMatch) {
-            return new Response(JSON.stringify({
-                success: false,
-                error: "Please Enter Valid Credentials"
-            }), { status: 400 })
-        }
-
-        // password matched, admin authenticated, featch all users 
+        // If we reach here, means admin is valid, so getting all users of our site...
         const allUsers = await UserModel.find({ role: "user" });
 
         // return all users list to admin...
@@ -50,7 +33,7 @@ export const POST = async (req) => {
     } catch (error) {
         return new Response(JSON.stringify({
             success: false,
-            message: "Internal Server Error"
+            message: error.message
         }), { status: 500 })
     }
 }

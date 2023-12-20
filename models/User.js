@@ -12,11 +12,13 @@ const UserSchema = new Schema({
     },
 
     userProfilePicture:{
-        type:String
+        type:String,
+        default:"",
     },
 
     userProfileBackgroundPicture:{
-        type:String
+        type:String,
+        default:"",
     },
 
     userProfileColor:{

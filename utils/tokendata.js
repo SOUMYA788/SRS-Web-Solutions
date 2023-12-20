@@ -9,6 +9,8 @@ export const getTokenData = async (req, cookies) => {
 
         const varifiedToken = await jwt.verify(tokenData, process.env.JWT_PRIVATE_KEY);
 
+        if (!varifiedToken) { throw new Error("Token Not Available") }
+        
         return varifiedToken?.id;
 
     } catch (error) {
