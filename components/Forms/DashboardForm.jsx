@@ -211,7 +211,7 @@ const DashboardForm = () => {
                 </div>
 
                 <div className="relative flex-grow w-full mb-4">
-                    <label htmlFor="userProfileBackground" className="leading-7 text-sm text-gray-600">Profile Background Color</label>
+                    <label htmlFor="userProfileBackgroundColor" className="leading-7 text-sm text-gray-600">Profile Background Color</label>
                     <input type="text" name="userProfileBackgroundColor" value={userDetails?.userProfileBackgroundColor || ""} onChange={detailsOnChange} className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-gray-500 focus:bg-transparent focus:ring-2 focus:ring-gray-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out disabled:opacity-75" disabled={formDisabled} />
                 </div>
 

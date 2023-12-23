@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 
-import CustomInput from '../FormElements/CustomInput'
+import CustomInputType1 from '../FormElements/CustomInput'
 import CustomButton from '../FormElements/CustomButton'
 import { toast } from 'react-toastify';
 
@@ -149,13 +149,13 @@ const SignupForm = ({ adminForm }) => {
 
     return (
         <form method="post" className="w-full mx-auto my-16 md:w-2/5 flex flex-col gap-3 text-slate-800">
-            <CustomInput inputType="name" inputName="userName" inputPlaceHolder="Enter Your Name" inputValue={userDetails?.userName} inputOnChange={inputOnChange} inputError={formError?.userName} />
+            <CustomInputType1 inputType="name" inputName="userName" inputPlaceHolder="Enter Your Name" inputValue={userDetails?.userName} inputOnChange={inputOnChange} inputError={formError?.userName} />
 
-            <CustomInput inputType="email" inputName="userEmail" inputPlaceHolder="Enter Your Email ID" inputValue={userDetails?.userEmail} inputOnChange={inputOnChange} inputError={formError?.userEmail} />
+            <CustomInputType1 inputType="email" inputName="userEmail" inputPlaceHolder="Enter Your Email ID" inputValue={userDetails?.userEmail} inputOnChange={inputOnChange} inputError={formError?.userEmail} />
 
-            <CustomInput inputType="number" inputName="userNumber" inputPlaceHolder="Enter Your Contact Number" inputValue={userDetails?.userNumber} inputOnChange={inputOnChange} inputError={formError?.userNumber} />
+            <CustomInputType1 inputType="number" inputName="userNumber" inputPlaceHolder="Enter Your Contact Number" inputValue={userDetails?.userNumber} inputOnChange={inputOnChange} inputError={formError?.userNumber} />
 
-            <CustomInput inputType="password" inputName="userPassword" inputPlaceHolder="Enter Your Password" inputValue={userDetails?.userPassword} inputOnChange={inputOnChange} inputError={formError?.userPassword} />
+            <CustomInputType1 inputType="password" inputName="userPassword" inputPlaceHolder="Enter Your Password" inputValue={userDetails?.userPassword} inputOnChange={inputOnChange} inputError={formError?.userPassword} />
 
             <CustomButton btnType="submit" btnName="submit" btnDisabled={btnDisabled} formProcessing={btnDisabled} btnOnClick={clickSubmit} />
 

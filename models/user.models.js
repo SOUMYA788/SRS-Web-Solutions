@@ -3,47 +3,40 @@ import mongoose,{Schema, model, models } from "mongoose"
 const UserSchema = new Schema({
     userName:{
         type:String,
-        require: [true, "Invalid Username"]
+        required: [true, "Invalid Username"],
+        trim:true
     },
     userEmail: {
         type:String, 
-        require:[true, "Invalid Email ID"],
+        required:[true, "Invalid Email ID"],
         unique:true,
+        trim:true
     },
-
     userProfilePicture:{
         type:String,
         default:"",
     },
-
     userProfileBackgroundPicture:{
         type:String,
         default:"",
     },
-
     userProfileColor:{
         type:String
     },
-
     userProfileBackgroundColor:{
         type:String
     },
-    
     userPhone:{
         type:String,
-        require: [true, "Invalid Phone Number"]
+        required: [true, "Invalid Phone Number"]
     },
     userPassword: {
         type:String, 
-        require:[true, "Password is Require"]
+        required:[true, "Password is Require"]
     },
     role:{
         type:String,
         default:"user"
-    },
-    orders:{
-        type:Array,
-        default:[]
     }
 }, {timestamps:true})
 

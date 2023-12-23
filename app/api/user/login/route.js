@@ -1,7 +1,7 @@
 import bcryptjs from "bcrypt"
 import jwt  from "jsonwebtoken";
 import dbConnection from "@/middleware/dbConnection";
-import UserModel from "@/models/User";
+import UserModel from "@/models/user.models";
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {

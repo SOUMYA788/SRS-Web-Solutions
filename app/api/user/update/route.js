@@ -1,5 +1,5 @@
 import dbConnection from "@/middleware/dbConnection";
-import UserModel from "@/models/User";
+import UserModel from "@/models/user.models";
 import { getTokenData } from "@/utils/tokendata";
 
 export const PUT = async (req) => {

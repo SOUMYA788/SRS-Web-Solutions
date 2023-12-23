@@ -1,5 +1,5 @@
 import dbConnection from "@/middleware/dbConnection";
-import ContactModel from "@/models/contact";
+import ContactModel from "@/models/contact.models";
 
 export const POST = async (req) => {
     const { userEmail, userMessage } = await req.json();

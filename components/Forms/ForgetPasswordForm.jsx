@@ -1,6 +1,6 @@
 "use client"
 import React,{useState} from 'react'
-import CustomInput from '../FormElements/CustomInput';
+import CustomInputType1 from '../FormElements/CustomInput';
 import CustomButton from '../FormElements/CustomButton';
 import Link from 'next/link';
 
@@ -45,7 +45,7 @@ const ForgetPasswordForm = () => {
     return (
         <form method="post" className="w-full mx-auto my-16 md:w-2/5 flex flex-col gap-3 text-slate-800">
 
-            <CustomInput inputType="email" inputName="email" inputPlaceHolder="Enter Your Email ID" inputValue={forgetID} inputOnChange={handleForgetPasswordInput} inputError={idError} />
+            <CustomInputType1 inputType="email" inputName="email" inputPlaceHolder="Enter Your Email ID" inputValue={forgetID} inputOnChange={handleForgetPasswordInput} inputError={idError} />
 
             <CustomButton btnName="reset" btnType="submit" btnOnClick={submitForgetForm} btnDisabled={btnDisabled} />
 

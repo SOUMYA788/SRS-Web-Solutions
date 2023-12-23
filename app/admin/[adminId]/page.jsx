@@ -1,5 +1,5 @@
 import DashboardForm from '@/components/Forms/DashboardForm';
-import { UserProfile } from '@/components/cards/UserProfile';
+import { UserProfileCardOne } from '@/components/cards/UserProfileCardOne';
 import { getUserData } from '@/utils/getUserData';
 import { cookies } from 'next/headers';
 import React from 'react'
@@ -40,7 +40,7 @@ const AdminHome = async () => {
 
                 <div className='w-full flex flex-wrap flex-col md:flex-row-reverse justify-between gap-5 mt-44'>
                     
-                    <UserProfile user={user} />
+                    <UserProfileCardOne user={user} cardWidth={null}/>
 
                     <div className='w-full flex-1 bg-slate-200 bg-opacity-60 border-slate-400 border-2 md:shadow-md rounded-lg p-2 h-fit'>
                         {/* USER INFORMATION EDITING FORM */}

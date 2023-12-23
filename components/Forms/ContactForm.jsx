@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import CustomInput from '../FormElements/CustomInput';
+import CustomInputType1 from '../FormElements/CustomInput';
 import CustomTextarea from '../FormElements/CustomTextarea';
 import CustomButton from '../FormElements/CustomButton';
 
@@ -85,7 +85,7 @@ const ContactForm = () => {
         <>
             <form method="post" className="w-full flex flex-col gap-4 text-slate-800">
 
-                <CustomInput inputType="email" inputName="userEmail" inputPlaceHolder="Your Email ID" inputValue={userDetails?.userEmail} inputOnChange={handleInput} inputError={formErrors?.userEmail} />
+                <CustomInputType1 inputType="email" inputName="userEmail" inputPlaceHolder="Your Email ID" inputValue={userDetails?.userEmail} inputOnChange={handleInput} inputError={formErrors?.userEmail} />
 
                 <CustomTextarea textAreaName="userMessage" textAreaPlaceholder="Your Query" textAreaValue={userDetails?.userMessage} textAreaOnChange={handleInput} textAreaError={formErrors?.userMessage} />
 

@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
-import CustomInput from '../FormElements/CustomInput'
+import {CustomInputType1} from '../FormElements/CustomInput'
 import CustomButton from '../FormElements/CustomButton'
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -114,10 +114,10 @@ const LoginForm = (adminForm) => {
     return (
         <>
             <form method="post" className="w-full mx-auto my-16 md:w-2/5 flex flex-col gap-3 text-slate-800">
-                <CustomInput inputType="email" inputName="loginEmail" inputPlaceHolder="Enter Your Email ID" inputValue={loginDetails?.loginEmail} inputOnChange={inputOnChange} inputError={loginEmailError} />
+                <CustomInputType1 inputType="email" inputName="loginEmail" inputPlaceHolder="Enter Your Email ID" inputValue={loginDetails?.loginEmail} inputOnChange={inputOnChange} inputError={loginEmailError} />
 
 
-                <CustomInput inputType="password" inputName="loginPassword" inputPlaceHolder="Enter Your Password" inputValue={loginDetails?.loginPassword} inputOnChange={inputOnChange} />
+                <CustomInputType1 inputType="password" inputName="loginPassword" inputPlaceHolder="Enter Your Password" inputValue={loginDetails?.loginPassword} inputOnChange={inputOnChange} />
 
                 <CustomButton btnType="submit" btnName="submit" btnDisabled={btnDisabled} btnOnClick={clickSubmit} formProcessing={processing} />
 

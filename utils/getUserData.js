@@ -1,12 +1,21 @@
 import dbConnection from "@/middleware/dbConnection";
 import { getTokenData } from "./tokendata";
-import UserModel from "@/models/User";
+import UserModel from "@/models/user.models";
 
-export const getUserData = async (req, cookies) => {
+// Here i cannot import cookies from next/header because it's use in user api then it will be client side basically, and in client side server functions are not allowed....😢
+
+// used in
+// - api/user,
+export const getUserData = async (req, cookies, userId, loginSecret) => {
     try {
+        
         await dbConnection();
 
-        const tokenID = await getTokenData(req, cookies)
+        if(loginSecret && loginSecret !== process.env.LOGIN_SECRET){
+            throw new Error("You are not authorised to access this data");
+        }
+
+        const tokenID = userId || await getTokenData(req, cookies)
 
         if (!tokenID) { throw new Error("Please refresh the browser or login again") }
 

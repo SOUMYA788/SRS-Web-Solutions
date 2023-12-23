@@ -1,11 +1,11 @@
 import dbConnection from "@/middleware/dbConnection";
-import UserModel from "@/models/User";
+import UserModel from "@/models/user.models";
 
-export const getAllUsersData = async (loginSecreat, loginEmail) => {
+export const getAllUsersData = async (loginSecret, loginEmail) => {
     try {
 
-        // If Login Secreat not matched, means user may be a hacker.
-        if (loginSecreat !== process.env.LOGIN_SECREAT) {
+        // If Login Secret not matched, means user may be a hacker.
+        if (loginSecret && loginSecret !== process.env.LOGIN_SECRET) {
             throw new Error("You are not authorised to access this data!")
         }
 

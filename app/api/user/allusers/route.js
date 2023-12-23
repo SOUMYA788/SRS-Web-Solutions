@@ -1,4 +1,4 @@
-import UserModel from "@/models/User";
+import UserModel from "@/models/user.models";
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
@@ -8,7 +8,7 @@ export const POST = async (req) => {
 
     try {
         // If Login Secreat not matched, means user may be a hacker.
-        if (loginSecreat !== process.env.LOGIN_SECREAT) { throw new Error(unauthorisedMessage) }
+        if (loginSecreat !== process.env.LOGIN_SECRET) { throw new Error(unauthorisedMessage) }
 
         // getting userId from cookie jwt token 
         const userId = await getTokenData(req, null);

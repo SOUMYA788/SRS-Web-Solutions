@@ -1,5 +1,5 @@
 import dbConnection from "@/middleware/dbConnection";
-import UserModel from "@/models/User";
+import UserModel from "@/models/user.models";
 import bcryptjs from "bcrypt"
 
 export const POST = async (req) => {

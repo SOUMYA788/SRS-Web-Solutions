@@ -106,7 +106,7 @@ const HeaderUserCorner = () => {
                         </div>
                     }
 
-                    <div className={`absolute top-16 -left-24 p-3 bg-gray-100 rounded-md ${iconHover ? "block" : "hidden"} shadow-md border-2 select-none`}>
+                    <div className={`absolute top-16 right-5 p-3 bg-gray-100 rounded-md ${iconHover ? "block" : "hidden"} shadow-md border-2 select-none`}>
 
                         {user?.value?.userName && <h2 className='text-center text-gray-600 mb-1'> {user?.value?.userName} </h2>}
 
