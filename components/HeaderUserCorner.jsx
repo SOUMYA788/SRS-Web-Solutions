@@ -7,6 +7,7 @@ import { assignUser, removeUser, userLoggedIn } from '@/Redux/slices/userSlice';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { showErrorToast, showSuccessToast } from '@/utils/showToast';
 
 
 const HeaderUserCorner = () => {
@@ -30,15 +31,9 @@ const HeaderUserCorner = () => {
             if (logoutResponse.ok) {
                 dispatch(userLoggedIn(false))
                 dispatch(removeUser());
-                toast.success('Logout Succesfully', {
-                    position: "bottom-center",
-                    autoClose: 500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "light",
-                });
+
+                showSuccessToast('Logout Succesfully')
+                
                 setTimeout(() => {
                     router.push("/")
                 }, 700);
@@ -46,15 +41,7 @@ const HeaderUserCorner = () => {
                 throw new Error("Faild to Logout")
             }
         } catch (error) {
-            toast.error('Faild to Logout', {
-                position: "bottom-center",
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "light",
-            });
+            showErrorToast('Faild to Logout')
         } finally {
             setLogoutProcess(false);
             setIconHover(false);
@@ -68,17 +55,15 @@ const HeaderUserCorner = () => {
             try {
                 const response = await fetch("/api/user");
                 if (!response.ok) {
-                    console.log("response error");
                     dispatch(userLoggedIn(false))
                     dispatch(removeUser())
                 } else {
                     const { success, userInfo } = await response.json();
-                    console.log("response from HeaderUserCorner", userInfo);
                     dispatch(userLoggedIn(success))
                     dispatch(assignUser(userInfo))
                 }
             } catch (error) {
-                console.log(error.message);
+                console.log("faild to get profile");
             }
         }
         getUserData()

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { BiCloudUpload } from 'react-icons/bi'
+import { showErrorToast, showSuccessToast } from '@/utils/showToast'
 
 
 
@@ -126,26 +127,10 @@ const DashboardForm = () => {
             }
 
             dispatch(assignUser({ ...user, ...updatedProfile }))
-            toast.success('Profile Updated Succesfully', {
-                position: "bottom-center",
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "light",
-            });
+            showSuccessToast('Profile Updated Succesfully');
 
         } catch (error) {
-            toast.error(error.message, {
-                position: "bottom-center",
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "light",
-            });
+            showErrorToast(error.message);
         } finally {
             router.refresh();
             setFormDisabled(true)

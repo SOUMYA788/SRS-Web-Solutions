@@ -2,11 +2,11 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
-import {CustomInputType1} from '../FormElements/CustomInput'
+import { CustomInputType1 } from '../FormElements/CustomInput'
 import CustomButton from '../FormElements/CustomButton'
-import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { userLoggedIn } from '@/Redux/slices/userSlice';
+import { showErrorToast, showSuccessToast } from '@/utils/showToast';
 
 
 const LoginForm = (adminForm) => {
@@ -53,47 +53,27 @@ const LoginForm = (adminForm) => {
                 })
             })
 
-
             if (featchResponse.ok) {
-                const {userId} = await featchResponse.json();
+                
+                const { userId } = await featchResponse.json();
                 console.log("response from login from for admin", userId);
                 // Valid User
-                toast.success('Login Succesfully', {
-                    position: "bottom-center",
-                    autoClose: 500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "light",
-                });
+                showSuccessToast('Login Succesfully');
 
                 dispatch(userLoggedIn(true))
 
                 setTimeout(() => {
                     router.push(adminForm ? `/admin/${userId}` : "/")
                 }, 700);
-            } else {
-                console.log("Responce Fail");
-                dispatch(userLoggedIn(false))
 
+            } else {
+                dispatch(userLoggedIn(false))
                 setLoginDetails({
                     loginEmail: "",
                     loginPassword: ""
                 })
-
-                toast.error('Login Faild', {
-                    position: "bottom-center",
-                    autoClose: 500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "light",
-                });
+                showErrorToast("Login Faild")
             }
-
-
         } catch (error) {
             console.log(error.message);
         } finally {

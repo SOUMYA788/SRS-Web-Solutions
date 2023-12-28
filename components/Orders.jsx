@@ -29,6 +29,7 @@ export const Orders = ({ orders }) => {
     const [ordersArray, setOrdersArray] = useState(orders)
 
     useEffect(() => {
+        
         const filteredOrders = orders.filter(order => {
             const orderPlaceTime = dateAndTimeFormatter(order.createdAt)
             const orderEstimatedTime = dateAndTimeFormatter(order.orderCompletionEstimatedTime)

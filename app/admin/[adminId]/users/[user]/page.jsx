@@ -96,7 +96,7 @@ const Details = async ({ params }) => {
 
       <section className="w-full my-3">
         <div className="w-full mb-5">
-          <UserOrderForm formWidth="w-full md:w-[350px]" fromAdmin={true} formAction={updateUserOrder} />
+          <UserOrderForm formWidth="w-full md:w-[350px]" fromAdmin={true} />
         </div>
         {userOrders?.length ? <Orders orders={userOrders} /> : <BorderContainerStyle1>
           <p className="w-full text-center text-sm text-slate-500">Data Not Available</p>

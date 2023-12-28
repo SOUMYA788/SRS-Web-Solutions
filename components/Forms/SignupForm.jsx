@@ -7,6 +7,7 @@ import Link from 'next/link'
 import CustomInputType1 from '../FormElements/CustomInput'
 import CustomButton from '../FormElements/CustomButton'
 import { toast } from 'react-toastify';
+import { showErrorToast, showSuccessToast } from '@/utils/showToast';
 
 const SignupForm = ({ adminForm }) => {
     const router = useRouter();
@@ -108,17 +109,7 @@ const SignupForm = ({ adminForm }) => {
 
             // as soon as login token receives move the user to home page...
 
-            console.log(response);
-            toast.success('Signup Succesfully', {
-                position: "bottom-center",
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            showSuccessToast('Signup Succesfully');
 
             setTimeout(() => {
                 router.push(adminForm ? "/admin/login" : "/login")
@@ -132,16 +123,9 @@ const SignupForm = ({ adminForm }) => {
                 userPassword: "",
                 role: adminForm ? "admin" : "user"
             })
-            toast.error(error.message, {
-                position: "bottom-center",
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            
+            showErrorToast(error.message);
+
         } finally {
             setBtnDisabled(false)
         }

@@ -2,7 +2,7 @@
 
 import OrderModel from "@/models/orders.model";
 
-export const updateUserOrder = async (formData) => {
+export const updateUserOrder = async (prevState, formData) => {
 
     try {
         const orderId = formData.get("orderId");
@@ -11,12 +11,25 @@ export const updateUserOrder = async (formData) => {
         const deliverWithin = formData.get("deliverWithin");
         const orderDeliveredDate = formData.get("orderDeliveredDate");
 
-        const hasIncorrectInfo = (!parseInt(orderPrice)) || (!["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase())) || (!regex.test(deliverWithin)) || (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))
+        const regex = /^[0-9]+\s[a-z]+/i
 
-        // if wrong data provided, then return with error...
-        if (hasIncorrectInfo) {
-            throw new Error("Credentials may be invalid");
+        if ((!orderId && !parseInt(orderPrice)) || (orderId && orderPrice && !parseInt(orderPrice))) {
+            throw new Error("Invalid Order Price")
         }
+
+        if ((!orderId && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase())) ||
+            (orderId && orderStatus && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase()))) {
+            throw new Error("Invalid Status")
+        }
+        
+        if((!orderId && !regex.test(deliverWithin)) || (orderId && deliverWithin && !regex.test(deliverWithin))){
+            throw new Error("Invalid Date")
+        }
+        
+        if((!orderId && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))) || orderId && orderDeliveredDate && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))){
+            throw new Error("Invalid Delivery Date")
+        }
+
 
         const rawFormData = {
             orderPrice: parseInt(orderPrice),
@@ -32,10 +45,9 @@ export const updateUserOrder = async (formData) => {
                 throw new Error("Faild to update order")
             }
 
-            return JSON.stringify({
-                success: true,
-                message: "Order Updated Succesfully"
-            })
+            return {
+                message: `Order ID: ${updatedOrder?._id?.toString()} Updated`
+            }
 
         } else {
             const newOrder = new OrderModel(rawFormData)
@@ -45,12 +57,14 @@ export const updateUserOrder = async (formData) => {
                 throw new Error("Faild to save the new order")
             }
 
-            return JSON.stringify({
-                success: true,
-                message: "Order Added Succesfully"
-            })
+            return {
+                message: `Order ID: ${newOrder?._id?.toString()} Added`
+            }
         }
     } catch (error) {
-        console.log("⚠⚠ ERROR FROM ACTION UPDATE_ORDER ⚠⚠", error.message);
+        console.log("\n\n⚠⚠ ERROR FROM ACTION UPDATE_ORDER ⚠⚠\n", error.message, "\n\n");
+        return {
+            message: error.message
+        }
     }
 }
