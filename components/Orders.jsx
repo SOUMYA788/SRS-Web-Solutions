@@ -1,47 +1,45 @@
 "use client"
+
 import React, { useState, useEffect } from 'react'
 import { OrderCards } from './cards/OrderCards';
 import { dateAndTimeFormatter } from '@/utils/dateAndTimeFormatter';
 import { BorderContainerStyle1 } from './BorderContainer';
+import { useSelector } from 'react-redux';
 
 export const Orders = ({ orders }) => {
 
-    // this card or component used in
-    // - users dashboard/orders,
-    // - admin -> user's list -> perticular user's orders details...
-
-    /*
-        // order related data will come here, not included payment related data they will store in another collection
-
-        // orderId, orderPrice, orderStatus, orderPlaced, orderDeliver
-
-        // card details looks like...
-        // order id #05500
-        // order price: ₹500
-        // order status -> pending/delivered/cancelled/
-        // 
-        // Order Placed: 01.04.2022
-        // Estimated Time: 30 Days || Order Delivered: 31.04.2022
-    */
+    const ordersArr = useSelector((state) => state?.order?.value)
 
     const [filter, setFilter] = useState("");
 
     const [ordersArray, setOrdersArray] = useState(orders)
 
     useEffect(() => {
-        
-        const filteredOrders = orders.filter(order => {
-            const orderPlaceTime = dateAndTimeFormatter(order.createdAt)
-            const orderEstimatedTime = dateAndTimeFormatter(order.orderCompletionEstimatedTime)
-            const orderDeliveredTime = dateAndTimeFormatter(order.orderDeliveredTime)
 
-            if (order.orderId === filter || order.orderPrice === filter || order.orderStatus === filter || orderPlaceTime.contains(filter) || orderEstimatedTime.contains(filter) || orderDeliveredTime.contains(filter)) {
-                return true;
-            } else return false;
-        })
+        if (filter) {
 
-        setOrdersArray(filteredOrders);
-    }, [filter])
+            const filteredOrders = ordersArray.filter(order => {
+                const orderPlaceTime = dateAndTimeFormatter(order.createdAt)
+                const orderEstimatedTime = dateAndTimeFormatter(order.orderCompletionEstimatedTime)
+                const orderDeliveredTime = dateAndTimeFormatter(order.orderDeliveredTime)
+
+                return (
+                    order.orderId === filter ||
+                    order.orderPrice === filter ||
+                    order.orderStatus === filter ||
+                    orderPlaceTime.includes(filter) ||
+                    orderEstimatedTime.includes(filter) ||
+                    orderDeliveredTime.includes(filter)
+                );
+            })
+
+            setOrdersArray(filteredOrders);
+        }
+
+        if (ordersArr?.length > 0 || !filter) { setOrdersArray(ordersArr) }
+
+    }, [ordersArr, filter])
+
 
 
     return (

@@ -1,7 +1,7 @@
 "use client"
 import React,{useState} from 'react'
 import CustomInputType1 from '../FormElements/CustomInput';
-import CustomButton from '../FormElements/CustomButton';
+import {CustomButton} from '../FormElements/CustomButton';
 import Link from 'next/link';
 
 

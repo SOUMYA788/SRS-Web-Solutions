@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react'
-import CustomButton from '../FormElements/CustomButton'
+import {CustomButton} from '../FormElements/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { assignUser } from '@/Redux/slices/userSlice'
 import { toast } from 'react-toastify'
@@ -15,6 +15,7 @@ import { showErrorToast, showSuccessToast } from '@/utils/showToast'
 
 const DashboardForm = () => {
     // name, email, phone, profileColor, profileBackground
+    const user = useSelector((state) => state.user.value)
     const dispatch = useDispatch()
     const router = useRouter()
 

@@ -3,13 +3,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { CustomInputType1 } from '../FormElements/CustomInput'
-import CustomButton from '../FormElements/CustomButton'
+import {CustomButton} from '../FormElements/CustomButton'
 import { useDispatch } from 'react-redux';
 import { userLoggedIn } from '@/Redux/slices/userSlice';
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
+import { validateEmail } from '@/utils/varifyInput';
 
 
-const LoginForm = (adminForm) => {
+const LoginForm = ({adminForm}) => {
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -31,11 +32,7 @@ const LoginForm = (adminForm) => {
         })
         setLoginEmailError(null)
     }
-
-    const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
+    
 
     const clickSubmit = async (e) => {
         e.preventDefault();

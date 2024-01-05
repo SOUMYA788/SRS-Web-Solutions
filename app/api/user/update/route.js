@@ -6,7 +6,7 @@ export const PUT = async (req) => {
     const data = await req.json();
 
     try {
-        const userId = await getTokenData();
+        const userId = await getTokenData(req, null);
         await dbConnection();
 
         const updatedProfile = await UserModel.findByIdAndUpdate({ _id: userId }, data);

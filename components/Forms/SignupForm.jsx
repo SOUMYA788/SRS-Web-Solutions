@@ -4,12 +4,12 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 
-import CustomInputType1 from '../FormElements/CustomInput'
-import CustomButton from '../FormElements/CustomButton'
+import {CustomInputType1} from '../FormElements/CustomInput'
+import {CustomButton} from '../FormElements/CustomButton'
 import { toast } from 'react-toastify';
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
 
-const SignupForm = ({ adminForm }) => {
+export const SignupForm = ({ adminForm }) => {
     const router = useRouter();
 
     const [userDetails, setUserDetails] = useState({
@@ -149,5 +149,3 @@ const SignupForm = ({ adminForm }) => {
         </form>
     )
 }
-
-export default SignupForm

@@ -1,5 +1,5 @@
 import CustomHeadding from '@/components/CustomHeadding'
-import SignupForm from '@/components/Forms/SignupForm'
+import { SignupForm } from '@/components/Forms/SignupForm'
 import Image from 'next/image'
 import React from 'react'
 

@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { BiLogInCircle } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux';
 import { assignUser, removeUser, userLoggedIn } from '@/Redux/slices/userSlice';
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
@@ -33,7 +32,7 @@ const HeaderUserCorner = () => {
                 dispatch(removeUser());
 
                 showSuccessToast('Logout Succesfully')
-                
+
                 setTimeout(() => {
                     router.push("/")
                 }, 700);

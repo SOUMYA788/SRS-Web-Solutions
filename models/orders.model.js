@@ -18,18 +18,16 @@ const ordersSchema = new mongoose.Schema({
         type: String,
         required:true
     },
-    orderDelivered: {
-        type: Boolean,
-        default: false,
-    },
-    orderDeliveredTime: {
+    orderDeliveredDate: {
         type: String,
         default: "",
     }
 }, { timestamps: true })
 
-mongoose.models = {};
 
-const OrderModel = mongoose.model("OrderModel", ordersSchema);
+// mongoose.models = {};
+
+const OrderModel = mongoose?.models?.OrderModel || mongoose.model("OrderModel", ordersSchema);
 
 export default OrderModel
+

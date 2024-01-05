@@ -1,13 +1,16 @@
 import mongoose from 'mongoose'
+
 let isConnected = false;
 const dbConnection = async () => {
-    mongoose.set("strictQuery", true)
-    console.log("Starting Connection Process");
-    if (isConnected) {
-        console.log("MongoDB is already Connected");
-        return
-    }
+
     try {
+        mongoose.set("strictQuery", true);
+        console.log("Starting Connection Process");
+        if (isConnected) {
+            console.log("MongoDB is already Connected");
+            return
+        }
+
         await mongoose.connect(process.env.MONGODB_URI);
         isConnected = true;
         console.log("MongoDB is Connected Now");

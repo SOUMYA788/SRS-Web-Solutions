@@ -12,7 +12,7 @@ export const getUserOrders = async (req, cookies, userId, loginSecret) => {
 
         const user = userId || await getTokenData(req, cookies);
 
-        const userOrders = user ? await OrderModel.findOne({ user: user }) :  await OrderModel.find();
+        const userOrders = user ? await OrderModel.find({ user }) :  await OrderModel.find();
 
         if (!userOrders) { throw new Error("Invalid User") }
 

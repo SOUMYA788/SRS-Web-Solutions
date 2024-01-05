@@ -8,9 +8,7 @@ import { getUserData } from '@/utils/getUserData';
 import { getUserOrders } from '@/utils/getUserOrders';
 import { getUserPaymentDetails } from '@/utils/getUserPaymentDetails';
 import { cookies } from 'next/headers';
-import { BiPencil } from 'react-icons/bi';
 import React from 'react'
-import { updateUserOrder } from '@/app/actions';
 
 
 const Details = async ({ params }) => {
@@ -18,13 +16,13 @@ const Details = async ({ params }) => {
   const cookieStore = cookies();
 
 
-  const stringifyUserData = await getUserData(null, null, userId, process.env.LOGIN_SECREAT);
+  const stringifyUserData = await getUserData(null, null, userId, process.env.LOGIN_SECRET);
   const userData = JSON.parse(stringifyUserData); // userData is not admin's data
 
-  const stringifyOrders = await getUserOrders(null, null, userData?._id, process.env.LOGIN_SECREAT);
+  const stringifyOrders = await getUserOrders(null, null, userData?._id, process.env.LOGIN_SECRET);
   const userOrders = stringifyOrders ? JSON.parse(stringifyOrders) : null;
 
-  const stringifyPaymentDetails = await getUserPaymentDetails(null, null, userData?._id, process.env.LOGIN_SECREAT);
+  const stringifyPaymentDetails = await getUserPaymentDetails(null, null, userData?._id, process.env.LOGIN_SECRET);
   const userPaymentDetails = stringifyPaymentDetails ? JSON.parse(stringifyPaymentDetails) : null;
 
 
@@ -96,11 +94,9 @@ const Details = async ({ params }) => {
 
       <section className="w-full my-3">
         <div className="w-full mb-5">
-          <UserOrderForm formWidth="w-full md:w-[350px]" fromAdmin={true} />
+          <UserOrderForm formWidth="w-full md:w-[350px]" userId={userData?._id} fromAdmin={true} />
         </div>
-        {userOrders?.length ? <Orders orders={userOrders} /> : <BorderContainerStyle1>
-          <p className="w-full text-center text-sm text-slate-500">Data Not Available</p>
-        </BorderContainerStyle1>}
+        <Orders orders={userOrders} />
       </section>
 
       <section className="w-full my-3">
@@ -111,6 +107,7 @@ const Details = async ({ params }) => {
             userPaymentDetails?.length > 0 ? <Payments payments={userPaymentDetails} /> : <p className="w-full text-center text-sm text-slate-500">Data Not Available</p>
           }
         </BorderContainerStyle1>
+
       </section>
     </>
   )

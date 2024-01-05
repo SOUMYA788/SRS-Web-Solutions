@@ -40,6 +40,7 @@ const UserSchema = new Schema({
     }
 }, {timestamps:true})
 
-mongoose.models = {}
-const UserModel = model("UserModel", UserSchema)
+// mongoose.models = {}
+
+const UserModel = mongoose.models.UserModel ||  model("UserModel", UserSchema)
 export default UserModel;   

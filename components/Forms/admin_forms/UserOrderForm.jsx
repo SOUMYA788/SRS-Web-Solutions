@@ -1,35 +1,126 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { BiPencil } from 'react-icons/bi'
-import { useFormStatus, useFormState } from "react-dom"
+import { CustomInputType1 } from '@/components/FormElements/CustomInput';
+import { CustomButton } from '@/components/FormElements/CustomButton';
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
+import OrderModel from '@/models/orders.model';
+import dbConnection from '@/middleware/dbConnection';
 import { updateUserOrder } from '@/app/actions';
-
-const SubmitBtn = () => {
-    const { pending } = useFormStatus();
-
-    return (
-        <button type="submit" disabled={pending} className="w-full text-xs text-slate-700 placeholder:text-slate-700 border border-blue-500 mx-auto mt-4 px-4 py-2 uppercase outline-none hover:border-blue-700 rounded-sm tracking-wide focus:border-blue-700 focus:rounded-full focus:bg-blue-500 focus:text-white transition-all disabled:border-red-500">
-            {pending ? "processing..." : "Update Now"}
-        </button>
-    )
-
-}
+import { useDispatch } from 'react-redux';
+import { updateOrder } from '@/Redux/slices/userOrdersSlice';
 
 
-const formStateInfo = {
-    message: "no form submitted in this session yet"
-}
 
-export const UserOrderForm = ({ fromAdmin, formWidth }) => {
+export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
+    const dispatch = useDispatch();
+    const [formState, setFormState] = useState({
+        userId: userId || "",
+        orderId: "",
+        orderPrice: "",
+        orderStatus: "",
+        deliverWithin: "",
+        orderDeliveredDate: "",
+    })
 
-    const [formState, formAction] = useFormState(updateUserOrder, formStateInfo)
+    const [formError, setFormError] = useState({ error: false, })
+
+    const [formProcessing, setFormProcessing] = useState(false);
+
     const [visibleForm, setVisibleForm] = useState(false);
 
     // function to show and hide the form
     const toggleForm = (e) => {
         e.preventDefault();
         setVisibleForm((value) => !value)
+    }
+
+    const inputOnChange = (e) => {
+        setFormState({
+            ...formState,
+            [e.target.name]: e.target.value
+        });
+
+        setFormError({
+            ...formError,
+            error: false,
+            [e.target.name]: null
+        });
+    }
+
+
+    const btnSubmit = async (e) => {
+
+        e.preventDefault();
+
+        setFormProcessing(true); // Form processing start...
+        console.log("on submit logic, checked");
+        // submit logic...
+        try {
+
+            const { userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate } = formState;
+
+            // Varify User Id
+            if (!userId) {
+                setFormError({
+                    ...formError,
+                    error: true,
+                    userId: "Invalid User ID"
+                });
+
+                throw new Error("Invalid User ID")
+            }
+
+            console.log("varified user id");
+            // Varify order price input
+            if ((!orderId && !parseInt(orderPrice)) || (orderId && orderPrice && !parseInt(orderPrice))) {
+                setFormError({
+                    ...formError,
+                    error: true,
+                    orderPrice: null
+                });
+
+                throw new Error("Invalid Order Price")
+            }
+
+            // Varify order status input
+            if ((!orderId && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase())) ||
+                (orderId && orderStatus && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase()))) {
+                throw new Error("Invalid Status")
+            }
+
+
+            const deliverWithinRegex = /^[0-9]+\s[a-z]+/i
+
+            // Varify deliver within input
+            if ((!orderId && !deliverWithinRegex.test(deliverWithin)) || (orderId && deliverWithin && !deliverWithinRegex.test(deliverWithin))) {
+                throw new Error("Invalid Date")
+            }
+
+            // Varify Order Delivered Date input
+            if ((!orderId && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))) || orderId && orderDeliveredDate && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))) {
+                throw new Error("Invalid Delivery Date")
+            }
+
+            const stringifyOrderInfo = await updateUserOrder(userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate)
+
+            const orderInfo = JSON.parse(stringifyOrderInfo);
+
+            console.log(orderInfo);
+
+            if (orderInfo?.success) {
+                showSuccessToast(orderInfo?.message);
+                dispatch(updateOrder(orderInfo.allData));
+            } else {
+                showErrorToast(orderInfo?.message);
+            }
+
+        } catch (error) {
+            showErrorToast(error?.message || "Invalid Order Form Submit");
+            console.log(error.message || "Invalid Order Form Submit", "From user order form")
+        } finally {
+            setFormProcessing(false); // form processing end...            
+        }
     }
 
 
@@ -47,19 +138,21 @@ export const UserOrderForm = ({ fromAdmin, formWidth }) => {
                 </div>
             }
 
-            <form action={formAction} className={`${formWidth || "w-full"} ${visibleForm ? "" : "hidden"} text-slate-800 px-3 py-4 border-2 border-gray-500 rounded-sm mt-3`} >
-                <input type="text" name="orderId" placeholder="order id - for update purpose" className={`w-full mb-2 p-3 text-sm placeholder:text-slate-500 border-2 border-gray-400 bg-transparent rounded-md outline-none focus:border-gray-500`} />
+            <form className={`${formWidth || "w-full"} ${visibleForm ? "" : "hidden"} text-slate-800 px-3 py-4 border-2 border-gray-500 rounded-sm mt-3 flex flex-col gap-5 justify-center`} >
 
-                <input type="text" name="orderPrice" placeholder="order amount in INR" className={`w-full my-2 p-3 text-sm placeholder:text-slate-500 border-2 border-gray-400 bg-transparent rounded-md outline-none focus:border-gray-500`} required={true} />
+                <CustomInputType1 inputType="text" inputName="orderId" inputPlaceHolder="order id - for update purpose" inputValue={formState.orderId} inputOnChange={inputOnChange} inputError={formError?.orderId} inputRequired={false} />
 
-                <input type="text" name="orderStatus" placeholder="status: PENDING, DELIVERED, or CANCELLED" className={`w-full my-2 p-3 text-sm placeholder:text-slate-500 border-2 border-gray-400 bg-transparent rounded-md outline-none focus:border-gray-500`} required />
+                <CustomInputType1 inputType="text" inputName="orderPrice" inputPlaceHolder="order amount in INR" inputValue={formState.orderPrice} inputOnChange={inputOnChange} inputError={formError?.orderPrice} inputRequired={true} />
 
-                <input type="text" name="deliverWithin" placeholder="Order Deliver Within" className={`w-full my-2 p-3 text-sm placeholder:text-slate-500 border-2 border-gray-400 bg-transparent rounded-md outline-none focus:border-gray-500`} required />
+                <CustomInputType1 inputType="text" inputName="orderStatus" inputPlaceHolder="status: PENDING, DELIVERED, or CANCELLED" inputValue={formState.orderStatus} inputOnChange={inputOnChange} inputError={formError?.orderStatus} inputRequired={true} />
 
-                <input type="date" name="orderDeliveredDate" placeholder="Date of Delivery" className={`w-full my-2 p-3 text-sm border-2 border-gray-400 bg-transparent rounded-md outline-none focus:border-gray-500`} required />
-                <SubmitBtn />
+                <CustomInputType1 inputType="text" inputName="deliverWithin" inputPlaceHolder="Order Deliver Within" inputValue={formState.deliverWithin} inputOnChange={inputOnChange} inputError={formError?.deliverWithin} inputRequired={true} />
 
-                <p className="mt-4 text-sm capitalize text-center">{formState?.message}</p>
+                <CustomInputType1 inputType="date" inputName="orderDeliveredDate" inputPlaceHolder="Date of Delivery" inputValue={formState.orderDeliveredDate} inputOnChange={inputOnChange} inputError={formError?.orderDeliveredDate} inputRequired={true} />
+
+
+                <CustomButton btnType="submit" btnOnClick={btnSubmit} btnDisabled={formProcessing} formProcessing={formProcessing} btnName={formState.orderId ? "Update" : "Add"} />
+
             </form>
         </>
     )
