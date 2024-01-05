@@ -1,19 +1,30 @@
 "use client"
 import { dateAndTimeFormatter } from '@/utils/dateAndTimeFormatter';
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux';
 
 export const Payments = ({ payments }) => {
+
+    const ordersArr = useSelector((state) => state?.order?.value)
+
     const [filter, setFilter] = useState("");
+
     const [paymentsArray, setPaymentsArray] = useState(payments)
+
+
 
     useEffect(() => {
         const filteredPayments = paymentsArray.filter(payment => {
             const orderPlaceTime = dateAndTimeFormatter(payment.createdAt)
             const paymentLastDate = dateAndTimeFormatter(payment.paymentLastDate)
 
-            if (payment.paymentId === filter || payment.paidAmount === filter || payment.paymentStatus === filter || orderPlaceTime.contains(filter) || paymentLastDate.contains(filter)) {
-                return true;
-            } else return false;
+            return (
+                payment.paymentId === filter ||
+                payment.paidAmount === filter ||
+                payment.paymentStatus === filter ||
+                orderPlaceTime.includes(filter) ||
+                paymentLastDate.includes(filter)
+            )
         })
 
         setPaymentsArray(filteredPayments);
@@ -38,7 +49,7 @@ export const Payments = ({ payments }) => {
                     }
 
                     {
-                        paymentsArray.map((payment, paymentIndex) => (
+                        paymentsArray?.length > 0 && paymentsArray.map((payment, paymentIndex) => (
                             <div key={`orderNumber_${paymentIndex}`} className="w-full sm:w-1/2 lg:w-[300px] xl:w-1/4 bg-slate-200 border-2 border-slate-700">
                                 <h2 className="text-base text-slate-400">{payment.paymentId}</h2>
                                 <p className="text-sm text-slate-400">order ref: {payment.orderId}</p>

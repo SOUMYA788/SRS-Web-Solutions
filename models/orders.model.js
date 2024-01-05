@@ -14,6 +14,16 @@ const ordersSchema = new mongoose.Schema({
         required:true,
         default:"pending",
     },
+    paymentStatus:{
+        type:String,
+        required:true,
+        default:"unpaid",
+        enum:["paid", "unpaid"]
+    },
+    paymentDateTime:{
+        type:String,
+        default:"undefined"
+    },
     deliverWithin:{
         type: String,
         required:true

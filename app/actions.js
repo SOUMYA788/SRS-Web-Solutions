@@ -14,7 +14,7 @@ import OrderModel from "@/models/orders.model";
  * @param {String} orderDeliveredDate 01-jan-2023
  * @returns {Object} Update or Added Status
  */
-export const updateUserOrder = async (userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate) => {
+export const updateUserOrder = async (userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime) => {
 
     // console.log("Admin ID from form-action updateUserOrder ----", adminId);
 
@@ -34,15 +34,16 @@ export const updateUserOrder = async (userId, orderId, orderPrice, orderStatus, 
             throw new Error("Invalid Date")
         }
 
-        if ((!orderId && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))) || orderId && orderDeliveredDate && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))) {
-            throw new Error("Invalid Delivery Date")
-        }
+        // Varify order payment status
+        const orderPaidOrUnpaid = (paymentStatus === "paid" || paymentStatus === "unpaid")
+
+        if ((!orderId && !orderPaidOrUnpaid) || (orderId && paymentStatus && !orderPaidOrUnpaid)) { throw new Error("Invalid Payment Status") }
 
 
         const rawFormData = {
             orderPrice: parseInt(orderPrice),
             user: userId || "",
-            orderStatus, deliverWithin, orderDeliveredDate
+            orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime
         }
 
         await dbConnection()

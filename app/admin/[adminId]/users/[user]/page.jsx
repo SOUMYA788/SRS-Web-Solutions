@@ -22,8 +22,8 @@ const Details = async ({ params }) => {
   const stringifyOrders = await getUserOrders(null, null, userData?._id, process.env.LOGIN_SECRET);
   const userOrders = stringifyOrders ? JSON.parse(stringifyOrders) : null;
 
-  const stringifyPaymentDetails = await getUserPaymentDetails(null, null, userData?._id, process.env.LOGIN_SECRET);
-  const userPaymentDetails = stringifyPaymentDetails ? JSON.parse(stringifyPaymentDetails) : null;
+  // const stringifyPaymentDetails = await getUserPaymentDetails(null, null, userData?._id, process.env.LOGIN_SECRET);
+  // const userPaymentDetails = stringifyPaymentDetails ? JSON.parse(stringifyPaymentDetails) : null;
 
 
 
@@ -104,7 +104,7 @@ const Details = async ({ params }) => {
 
         <BorderContainerStyle1>
           {
-            userPaymentDetails?.length > 0 ? <Payments payments={userPaymentDetails} /> : <p className="w-full text-center text-sm text-slate-500">Data Not Available</p>
+            <Payments payments={userOrders} />
           }
         </BorderContainerStyle1>
 

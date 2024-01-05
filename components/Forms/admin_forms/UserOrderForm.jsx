@@ -21,6 +21,8 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
         orderStatus: "",
         deliverWithin: "",
         orderDeliveredDate: "",
+        paymentStatus: "unpaid",
+        paymentDateTime: "undefined",
     })
 
     const [formError, setFormError] = useState({ error: false, })
@@ -58,7 +60,7 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
         // submit logic...
         try {
 
-            const { userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate } = formState;
+            const { userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime } = formState;
 
             // Varify User Id
             if (!userId) {
@@ -97,12 +99,14 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
                 throw new Error("Invalid Date")
             }
 
-            // Varify Order Delivered Date input
-            if ((!orderId && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))) || orderId && orderDeliveredDate && (!orderDeliveredDate.includes("-") || orderDeliveredDate.includes("()"))) {
-                throw new Error("Invalid Delivery Date")
-            }
+            // Varify order payment status
+            const orderPaidOrUnpaid = (paymentStatus === "paid" || paymentStatus === "unpaid")
 
-            const stringifyOrderInfo = await updateUserOrder(userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate)
+            if ((!orderId && !orderPaidOrUnpaid) || (orderId && paymentStatus && !orderPaidOrUnpaid)) { throw new Error("Invalid Payment Status") }
+
+            // Delivered Date, and payment dateTime no need varification, form provides tamplate to fill that area.
+
+            const stringifyOrderInfo = await updateUserOrder(userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime)
 
             const orderInfo = JSON.parse(stringifyOrderInfo);
 
@@ -144,11 +148,16 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
 
                 <CustomInputType1 inputType="text" inputName="orderPrice" inputPlaceHolder="order amount in INR" inputValue={formState.orderPrice} inputOnChange={inputOnChange} inputError={formError?.orderPrice} inputRequired={true} />
 
-                <CustomInputType1 inputType="text" inputName="orderStatus" inputPlaceHolder="status: PENDING, DELIVERED, or CANCELLED" inputValue={formState.orderStatus} inputOnChange={inputOnChange} inputError={formError?.orderStatus} inputRequired={true} />
+                <CustomInputType1 inputType="text" inputName="orderStatus" inputPlaceHolder="status: PENDING | DELIVERED | CANCELLED" inputValue={formState.orderStatus} inputOnChange={inputOnChange} inputError={formError?.orderStatus} inputRequired={true} />
 
                 <CustomInputType1 inputType="text" inputName="deliverWithin" inputPlaceHolder="Order Deliver Within" inputValue={formState.deliverWithin} inputOnChange={inputOnChange} inputError={formError?.deliverWithin} inputRequired={true} />
 
                 <CustomInputType1 inputType="date" inputName="orderDeliveredDate" inputPlaceHolder="Date of Delivery" inputValue={formState.orderDeliveredDate} inputOnChange={inputOnChange} inputError={formError?.orderDeliveredDate} inputRequired={true} />
+
+                <CustomInputType1 inputType="text" inputName="paymentStatus" inputPlaceHolder="Payment Status: paid | unpaid" inputValue={formState.paymentStatus} inputOnChange={inputOnChange} inputError={formError?.paymentStatus} inputRequired={true} />
+
+                {/* No Varification need for this, it provide pre-defined date and time format, no one can bypass it, also we use server action that's why no one can hit that req except admin. */}
+                <CustomInputType1 inputType="datetime-local" inputName="paymentDateTime" inputPlaceHolder="01-Jan-2024 05:30 AM" inputValue={formState.paymentDateTime} inputOnChange={inputOnChange} inputError={formError?.paymentDateTime} inputRequired={false} />
 
 
                 <CustomButton btnType="submit" btnOnClick={btnSubmit} btnDisabled={formProcessing} formProcessing={formProcessing} btnName={formState.orderId ? "Update" : "Add"} />
