@@ -6,15 +6,12 @@ import { UserProfileCardTwo } from '@/components/cards/UserProfileCardTwo';
 import { dateAndTimeFormatter } from '@/utils/dateAndTimeFormatter';
 import { getUserData } from '@/utils/getUserData';
 import { getUserOrders } from '@/utils/getUserOrders';
-import { getUserPaymentDetails } from '@/utils/getUserPaymentDetails';
-import { cookies } from 'next/headers';
 import React from 'react'
 
 
 const Details = async ({ params }) => {
   const userId = params.user;
-  const cookieStore = cookies();
-
+  
 
   const stringifyUserData = await getUserData(null, null, userId, process.env.LOGIN_SECRET);
   const userData = JSON.parse(stringifyUserData); // userData is not admin's data
@@ -22,21 +19,9 @@ const Details = async ({ params }) => {
   const stringifyOrders = await getUserOrders(null, null, userData?._id, process.env.LOGIN_SECRET);
   const userOrders = stringifyOrders ? JSON.parse(stringifyOrders) : null;
 
-  // const stringifyPaymentDetails = await getUserPaymentDetails(null, null, userData?._id, process.env.LOGIN_SECRET);
-  // const userPaymentDetails = stringifyPaymentDetails ? JSON.parse(stringifyPaymentDetails) : null;
-
-
 
   return (
-
     <>
-      {/*
-        User's Details Will Show Here. Details include 
-        ---- full profile, 
-        ---- orders (success, pending, faild, cancelled), and 
-        ---- payments (success, due, faild) 
-      */}
-
       <section className="w-full">
         <h2 className="text-lg font-semibold tracking-wide text-slate-700 mb-2 uppercase">PROFILE</h2>
 

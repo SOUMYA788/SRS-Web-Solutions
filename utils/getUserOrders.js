@@ -2,6 +2,7 @@ import OrderModel from "@/models/orders.model";
 import { getTokenData } from "./tokendata";
 import dbConnection from "@/middleware/dbConnection";
 
+// req, and cookies are not used as i thought, it should be removed after project completion.
 export const getUserOrders = async (req, cookies, userId, loginSecret) => {
     try {
         await dbConnection();

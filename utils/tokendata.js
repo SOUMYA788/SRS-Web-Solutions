@@ -14,10 +14,7 @@ export const getTokenData = async (req, cookies) => {
         return varifiedToken?.id;
 
     } catch (error) {
-        throw new Error(JSON.stringify({
-            success: false,
-            message: "Some Error Occoured",
-            error: error.message
-        }));
+        console.log("Falid to get userid from token");
+        return false;
     }
 }

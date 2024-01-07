@@ -5,7 +5,7 @@ import OrderModel from "@/models/orders.model";
 
 
 /**
- * 
+ * used in userOrderForm to get and process data from a form.
  * @param {String} userId for user reference in database
  * @param {String} orderId for filter purpose in database
  * @param {Number} orderPrice Order Price Value in Integer
@@ -14,55 +14,74 @@ import OrderModel from "@/models/orders.model";
  * @param {String} orderDeliveredDate 01-jan-2023
  * @returns {Object} Update or Added Status
  */
-export const updateUserOrder = async (userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime) => {
+export const updateUserOrder = async (userId, orderId, orderPrice, orderStatus, orderDeliveredDate, paymentStatus, paymentDateTime) => {
 
-    // console.log("Admin ID from form-action updateUserOrder ----", adminId);
 
     try {
-        const regex = /^[0-9]+\s[a-z]+/i
 
-        if ((!orderId && !parseInt(orderPrice)) || (orderId && orderPrice && !parseInt(orderPrice))) {
+        // Varify User Id
+        if (!userId) {
+            throw new Error("Invalid User ID")
+        }
+
+        if (
+            (!orderId && !parseInt(orderPrice)) ||
+            (orderId && (orderPrice !== "" && !parseInt(orderPrice)))
+        ) {
             throw new Error("Invalid Order Price")
         }
 
-        if ((!orderId && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase())) ||
-            (orderId && orderStatus && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase()))) {
+        if (!["pending", "delivered", "cancelled", ""].includes(orderStatus.toLowerCase().trim())) {
             throw new Error("Invalid Status")
         }
 
-        if ((!orderId && !regex.test(deliverWithin)) || (orderId && deliverWithin && !regex.test(deliverWithin))) {
-            throw new Error("Invalid Date")
+        // Varify order payment status: 
+        if (!["paid", "unpaid", ""].includes(paymentStatus.toLowerCase().trim())) {
+            //if (order id && !status) result is "unpaid" else change if present.
+            throw new Error("Invalid Payment Status")
         }
 
-        // Varify order payment status
-        const orderPaidOrUnpaid = (paymentStatus === "paid" || paymentStatus === "unpaid")
 
-        if ((!orderId && !orderPaidOrUnpaid) || (orderId && paymentStatus && !orderPaidOrUnpaid)) { throw new Error("Invalid Payment Status") }
-
-
-        const rawFormData = {
+        const newRawFormData = {
+            user: userId,
             orderPrice: parseInt(orderPrice),
-            user: userId || "",
-            orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime
+            paymentStatus: paymentStatus.toLowerCase().trim() === "" ? "unpaid" : paymentStatus,
+            orderStatus: orderStatus.toLowerCase().trim() === "" ? "pending" : orderStatus,
+            orderDeliveredDate,
+            paymentDateTime,
         }
+
+        const updatedRawFormData = {}
+
+        if (parseInt(orderPrice)) { updatedRawFormData.orderPrice = parseInt(orderPrice) }
+
+        if (paymentStatus.trim() !== "") { updatedRawFormData.paymentStatus = paymentStatus.toLowerCase() }
+
+        if (orderStatus.trim() !== "") { updatedRawFormData.orderStatus = orderStatus.toLowerCase() }
+
+        if (orderDeliveredDate.trim() !== "") { updatedRawFormData.orderDeliveredDate = orderDeliveredDate }
+
+        if (paymentDateTime.trim() !== "") { 
+            updatedRawFormData.paymentDateTime = paymentDateTime 
+        }
+
+
 
         await dbConnection()
 
-        if (orderId) {
+        if (orderId && orderId!=="") {
 
             const updatedOrder = await OrderModel.findByIdAndUpdate(
                 { _id: orderId },
-                { $set: rawFormData },
+                { $set: updatedRawFormData },
                 { runValidators: false },
                 { new: true }
             );
 
-            // we will proceed if email is not exist in database...
+            // we will proceed if user is not exist in database...
             if (!updatedOrder) {
                 throw new Error("Faild to update order")
             }
-
-            // revalidatePath(`/admin/${adminId}/users/${user.toString()}`)
 
             const updatedOrderArr = await OrderModel.find();
 
@@ -74,12 +93,10 @@ export const updateUserOrder = async (userId, orderId, orderPrice, orderStatus, 
             })
 
         } else {
-            const newOrder = new OrderModel(rawFormData)
+            const newOrder = new OrderModel(newRawFormData)
             const savedOrder = await newOrder.save();
 
-            if (!savedOrder) {
-                throw new Error("Faild to save the new order")
-            }
+            if (!savedOrder) { throw new Error("Faild to save the new order") }
 
             const updatedOrderArr = await OrderModel.find();
 
@@ -94,7 +111,7 @@ export const updateUserOrder = async (userId, orderId, orderPrice, orderStatus, 
         console.log("\n\n⚠⚠ ERROR FROM ACTION UPDATE_ORDER ⚠⚠\n", error.message, "\n\n");
         return JSON.stringify({
             success: false,
-            message: error.message,
+            message: error.message || "Order faild to Update or Added",
             data: null
         })
     }

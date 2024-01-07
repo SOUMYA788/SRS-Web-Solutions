@@ -4,8 +4,6 @@ import { BiPencil } from 'react-icons/bi'
 import { CustomInputType1 } from '@/components/FormElements/CustomInput';
 import { CustomButton } from '@/components/FormElements/CustomButton';
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
-import OrderModel from '@/models/orders.model';
-import dbConnection from '@/middleware/dbConnection';
 import { updateUserOrder } from '@/app/actions';
 import { useDispatch } from 'react-redux';
 import { updateOrder } from '@/Redux/slices/userOrdersSlice';
@@ -19,9 +17,8 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
         orderId: "",
         orderPrice: "",
         orderStatus: "",
-        deliverWithin: "",
         orderDeliveredDate: "",
-        paymentStatus: "unpaid",
+        paymentStatus: "",
         paymentDateTime: "undefined",
     })
 
@@ -56,11 +53,12 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
         e.preventDefault();
 
         setFormProcessing(true); // Form processing start...
-        console.log("on submit logic, checked");
+
         // submit logic...
         try {
 
-            const { userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime } = formState;
+            const { userId, orderId, orderPrice, orderStatus, orderDeliveredDate, paymentStatus, paymentDateTime } = formState;
+
 
             // Varify User Id
             if (!userId) {
@@ -73,9 +71,11 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
                 throw new Error("Invalid User ID")
             }
 
-            console.log("varified user id");
             // Varify order price input
-            if ((!orderId && !parseInt(orderPrice)) || (orderId && orderPrice && !parseInt(orderPrice))) {
+            if (
+                (!orderId && !parseInt(orderPrice)) ||
+                (orderId && (orderPrice !== "" && !parseInt(orderPrice)))
+            ) {
                 setFormError({
                     ...formError,
                     error: true,
@@ -86,31 +86,20 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
             }
 
             // Varify order status input
-            if ((!orderId && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase())) ||
-                (orderId && orderStatus && !["pending", "delivered", "cancelled"].includes(orderStatus.toLowerCase()))) {
+            if (!["pending", "delivered", "cancelled", ""]?.includes(orderStatus.toLowerCase().trim())) {
                 throw new Error("Invalid Status")
             }
 
-
-            const deliverWithinRegex = /^[0-9]+\s[a-z]+/i
-
-            // Varify deliver within input
-            if ((!orderId && !deliverWithinRegex.test(deliverWithin)) || (orderId && deliverWithin && !deliverWithinRegex.test(deliverWithin))) {
-                throw new Error("Invalid Date")
-            }
-
             // Varify order payment status
-            const orderPaidOrUnpaid = (paymentStatus === "paid" || paymentStatus === "unpaid")
-
-            if ((!orderId && !orderPaidOrUnpaid) || (orderId && paymentStatus && !orderPaidOrUnpaid)) { throw new Error("Invalid Payment Status") }
+            if (!["paid", "unpaid", ""]?.includes(paymentStatus.toLowerCase().trim())) {
+                throw new Error("Invalid Payment Status")
+            }
 
             // Delivered Date, and payment dateTime no need varification, form provides tamplate to fill that area.
 
-            const stringifyOrderInfo = await updateUserOrder(userId, orderId, orderPrice, orderStatus, deliverWithin, orderDeliveredDate, paymentStatus, paymentDateTime)
+            const stringifyOrderInfo = await updateUserOrder(userId, orderId, orderPrice, orderStatus, orderDeliveredDate, paymentStatus, paymentDateTime)
 
             const orderInfo = JSON.parse(stringifyOrderInfo);
-
-            console.log(orderInfo);
 
             if (orderInfo?.success) {
                 showSuccessToast(orderInfo?.message);
@@ -121,7 +110,6 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
 
         } catch (error) {
             showErrorToast(error?.message || "Invalid Order Form Submit");
-            console.log(error.message || "Invalid Order Form Submit", "From user order form")
         } finally {
             setFormProcessing(false); // form processing end...            
         }
@@ -148,16 +136,15 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
 
                 <CustomInputType1 inputType="text" inputName="orderPrice" inputPlaceHolder="order amount in INR" inputValue={formState.orderPrice} inputOnChange={inputOnChange} inputError={formError?.orderPrice} inputRequired={true} />
 
-                <CustomInputType1 inputType="text" inputName="orderStatus" inputPlaceHolder="status: PENDING | DELIVERED | CANCELLED" inputValue={formState.orderStatus} inputOnChange={inputOnChange} inputError={formError?.orderStatus} inputRequired={true} />
+                <CustomInputType1 inputType="text" inputName="orderStatus" inputPlaceHolder="status: PENDING | DELIVERED | CANCELLED" inputValue={formState.orderStatus} inputOnChange={inputOnChange} inputError={formError?.orderStatus} inputRequired={false} />
 
-                <CustomInputType1 inputType="text" inputName="deliverWithin" inputPlaceHolder="Order Deliver Within" inputValue={formState.deliverWithin} inputOnChange={inputOnChange} inputError={formError?.deliverWithin} inputRequired={true} />
+                <CustomInputType1 inputType="date" inputName="orderDeliveredDate" inputPlaceHolder="Date of Delivery" inputValue={formState.orderDeliveredDate} inputOnChange={inputOnChange} inputError={formError?.orderDeliveredDate} inputRequired={true} inputLabel="Date of Delivery" />
 
-                <CustomInputType1 inputType="date" inputName="orderDeliveredDate" inputPlaceHolder="Date of Delivery" inputValue={formState.orderDeliveredDate} inputOnChange={inputOnChange} inputError={formError?.orderDeliveredDate} inputRequired={true} />
-
-                <CustomInputType1 inputType="text" inputName="paymentStatus" inputPlaceHolder="Payment Status: paid | unpaid" inputValue={formState.paymentStatus} inputOnChange={inputOnChange} inputError={formError?.paymentStatus} inputRequired={true} />
+                <CustomInputType1 inputType="text" inputName="paymentStatus" inputPlaceHolder="Payment Status: paid | unpaid" inputValue={formState.paymentStatus} inputOnChange={inputOnChange} inputError={formError?.paymentStatus} inputRequired={false} />
 
                 {/* No Varification need for this, it provide pre-defined date and time format, no one can bypass it, also we use server action that's why no one can hit that req except admin. */}
-                <CustomInputType1 inputType="datetime-local" inputName="paymentDateTime" inputPlaceHolder="01-Jan-2024 05:30 AM" inputValue={formState.paymentDateTime} inputOnChange={inputOnChange} inputError={formError?.paymentDateTime} inputRequired={false} />
+
+                <CustomInputType1 inputType="datetime-local" inputName="paymentDateTime" inputPlaceHolder="01-Jan-2024 05:30 AM" inputValue={formState.paymentDateTime} inputOnChange={inputOnChange} inputError={formError?.paymentDateTime} inputRequired={false} inputLabel="Payment Date and Time" />
 
 
                 <CustomButton btnType="submit" btnOnClick={btnSubmit} btnDisabled={formProcessing} formProcessing={formProcessing} btnName={formState.orderId ? "Update" : "Add"} />

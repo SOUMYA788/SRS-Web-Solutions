@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { OrderCards } from './cards/OrderCards';
+import { TransactionCard } from './cards/TransactionCard';
 import { dateAndTimeFormatter } from '@/utils/dateAndTimeFormatter';
 import { BorderContainerStyle1 } from './BorderContainer';
 import { useSelector } from 'react-redux';
@@ -19,24 +19,26 @@ export const Orders = ({ orders }) => {
         if (filter) {
 
             const filteredOrders = ordersArray.filter(order => {
-                const orderPlaceTime = dateAndTimeFormatter(order.createdAt)
-                const orderEstimatedTime = dateAndTimeFormatter(order.orderCompletionEstimatedTime)
-                const orderDeliveredTime = dateAndTimeFormatter(order.orderDeliveredTime)
+                const orderPlaceTime = dateAndTimeFormatter(order.createdAt, "date")
+                const orderEstimatedTime = dateAndTimeFormatter(order.orderCompletionEstimatedTime, "date")
+                const orderDeliveredTime = dateAndTimeFormatter(order.orderDeliveredTime, "date")
 
                 return (
                     order.orderId === filter ||
                     order.orderPrice === filter ||
                     order.orderStatus === filter ||
-                    orderPlaceTime.includes(filter) ||
-                    orderEstimatedTime.includes(filter) ||
-                    orderDeliveredTime.includes(filter)
+                    orderPlaceTime?.includes(filter) ||
+                    orderEstimatedTime?.includes(filter) ||
+                    orderDeliveredTime?.includes(filter)
                 );
             })
 
             setOrdersArray(filteredOrders);
         }
 
-        if (ordersArr?.length > 0 || !filter) { setOrdersArray(ordersArr) }
+        if (ordersArr?.length > 0 || (ordersArr?.length > 0 && !filter)) { 
+            setOrdersArray(ordersArr) 
+        }
 
     }, [ordersArr, filter])
 
@@ -56,7 +58,7 @@ export const Orders = ({ orders }) => {
             <BorderContainerStyle1>
                 {
                     ordersArray?.length > 0 ? ordersArray.map((order, orderIndex) => (
-                        <OrderCards key={`orderNumber_${orderIndex}`} order={order} />
+                        <TransactionCard orderId={order?._id} orderPrice={order?.orderPrice} orderStatus={order?.orderStatus} orderPlaceTime={order?.createdAt} deliverWithin={order?.deliverWithin} orderDeliveredDate={order?.orderDeliveredDate} paidAmount={order?.paidAmount} paymentStatus={order?.paymentStatus} paymentDate={order?.paymentDateTime} key={`orderNumber_${orderIndex}`}/>
                     )) : <p className="w-full text-center text-sm text-slate-500">Data Not Available</p>
                 }
             </BorderContainerStyle1>

@@ -3,64 +3,87 @@ import { dateAndTimeFormatter } from '@/utils/dateAndTimeFormatter';
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 
+const PaymentCardWrapper = ({ children }) => {
+    return (
+        <div className="w-40 h-40 flex flex-col items-center justify-center gap-5 rounded-md shadow-md text-gray-500 border border-slate-300 shadow-slate-400 tracking-wide">
+            {children}
+        </div>
+    )
+}
+
 export const Payments = ({ payments }) => {
 
     const ordersArr = useSelector((state) => state?.order?.value)
 
-    const [filter, setFilter] = useState("");
 
-    const [paymentsArray, setPaymentsArray] = useState(payments)
-
+    const [paymentsArray, setPaymentsArray] = useState(payments);
+    const [paidAmount, setPaidAmount] = useState(0);
+    const [unpaidAmount, setUnpaidAmount] = useState(0);
 
 
     useEffect(() => {
-        const filteredPayments = paymentsArray.filter(payment => {
-            const orderPlaceTime = dateAndTimeFormatter(payment.createdAt)
-            const paymentLastDate = dateAndTimeFormatter(payment.paymentLastDate)
 
-            return (
-                payment.paymentId === filter ||
-                payment.paidAmount === filter ||
-                payment.paymentStatus === filter ||
-                orderPlaceTime.includes(filter) ||
-                paymentLastDate.includes(filter)
-            )
-        })
+        if (ordersArr?.length > 0) {
+            setPaymentsArray(ordersArr);
+        }
 
-        setPaymentsArray(filteredPayments);
-    }, [filter])
+    }, [ordersArr])
+
+
+    useEffect(() => {
+
+        setPaidAmount(0);
+        setUnpaidAmount(0);
+
+        const filterPaidArray = paymentsArray.filter(payments => payments?.paymentStatus?.toLowerCase() === "paid");
+
+        filterPaidArray.forEach(obj => { setPaidAmount(parseInt(paidAmount) + parseInt(obj?.orderPrice)) });
+
+        const filterUnPaidArray = paymentsArray.filter(payments => payments?.paymentStatus?.toLowerCase() === "unpaid");
+
+
+        filterUnPaidArray.map((obj) => {
+            setUnpaidAmount((value) => {
+                return (value + obj?.orderPrice)
+            })
+        });
+
+    }, [paymentsArray])
+
 
 
     return (
 
         <>
-            <nav className="w-full flex flex-row justify-between items-center gap-3">
-                <h2 className="mb-1 capitalize text-2xl font-semibold text-slate-700"> payments </h2>
-                <input type="search" name="searchOrders" placeholder="search previous payments by id, price, or status" value={filter} onChange={(e) => setFilter(e.target.value)} className="outline-none w-full md:w-60 border-2 focus:border-blue-500 hover:border-blue-500 rounded-md" />
-            </nav>
-            <section className="w-full">
-                {/* current orders */}
-                <h2 className="mb-1 capitalize text-2xl font-semibold text-slate-700">{filter ? "Available Payments" : "All Payments"}</h2>
-                <div className="w-full flex flex-row flex-wrap gap-5 items-center">
-                    {
-                        !paymentsArray?.length > 0 && <div className="w-full">
-                            <h2 className="text-center capitalize text-xl"> No Such Orders Available Right Now</h2>
-                        </div>
-                    }
+            <section className="w-full flex flex-row flex-wrap gap-5 items-center justify-between px-3">
 
-                    {
-                        paymentsArray?.length > 0 && paymentsArray.map((payment, paymentIndex) => (
-                            <div key={`orderNumber_${paymentIndex}`} className="w-full sm:w-1/2 lg:w-[300px] xl:w-1/4 bg-slate-200 border-2 border-slate-700">
-                                <h2 className="text-base text-slate-400">{payment.paymentId}</h2>
-                                <p className="text-sm text-slate-400">order ref: {payment.orderId}</p>
-                                <p className="text-sm text-slate-400">amount: {payment.paidAmount}</p>
-                                <p className="text-sm text-slate-400">status: {payment.paymentStatus}</p>
-                                <p className="text-sm text-slate-400">last date: {payment.paymentLastDate}</p>
+                {/* <h2 className="text-center capitalize text-base"> We have to work on this</h2> */}
 
-                            </div>
-                        ))
-                    }
-                </div>
+                {
+                    !paymentsArray?.length > 0 && <div className="w-full">
+                        <p className="w-full text-center capitalize text-sm text-slate-500"> No Data Available</p>
+                    </div>
+                }
+
+                {
+                    paymentsArray.length > 0 && <>
+
+                        <PaymentCardWrapper>
+                            <p className="text-base uppercase">RECEIVED</p>
+                            <p className="text-lg">₹ {paidAmount}</p>
+                        </PaymentCardWrapper>
+
+                        <PaymentCardWrapper>
+                            <p className="text-base uppercase">upcomming</p>
+                            <p className="text-lg">₹ {unpaidAmount}</p>
+                        </PaymentCardWrapper>
+
+                        <PaymentCardWrapper>
+                            <p className="text-base uppercase">total</p>
+                            <p className="text-lg">₹ {parseInt(paidAmount) + parseInt(unpaidAmount)}</p>
+                        </PaymentCardWrapper>
+                    </>
+                }
 
             </section>
         </>

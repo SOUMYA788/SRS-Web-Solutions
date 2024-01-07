@@ -11,22 +11,18 @@ const ordersSchema = new mongoose.Schema({
     },
     orderStatus: {
         type: String,
-        required:true,
-        default:"pending",
+        required: true,
+        default: "pending",
     },
-    paymentStatus:{
-        type:String,
-        required:true,
-        default:"unpaid",
-        enum:["paid", "unpaid"]
-    },
-    paymentDateTime:{
-        type:String,
-        default:"undefined"
-    },
-    deliverWithin:{
+    paymentStatus: {
         type: String,
-        required:true
+        required: true,
+        default: "unpaid",
+        enum: ["paid", "unpaid"]
+    },
+    paymentDateTime: {
+        type: String,
+        default: "undefined"
     },
     orderDeliveredDate: {
         type: String,
@@ -35,9 +31,10 @@ const ordersSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 
-// mongoose.models = {};
+mongoose.models = {};
 
-const OrderModel = mongoose?.models?.OrderModel || mongoose.model("OrderModel", ordersSchema);
+const OrderModel = mongoose.model("OrderModel", ordersSchema);
+// const OrderModel = mongoose?.models?.OrderModel || mongoose.model("OrderModel", ordersSchema);
 
 export default OrderModel
 

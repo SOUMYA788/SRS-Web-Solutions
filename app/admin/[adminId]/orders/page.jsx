@@ -1,9 +1,15 @@
+
+import { Orders } from '@/components/Orders';
+import { getUserOrders } from '@/utils/getUserOrders';
 import React from 'react'
 
-const Orders = () => {
+const AllOrders = async () => {
+  const stringifyOrders = await getUserOrders(null, null, null, process.env.LOGIN_SECRET);
+  const userOrders = stringifyOrders ? JSON.parse(stringifyOrders) : null;
+  console.log("allUserOrders", userOrders);
   return (
-    <div>All Received Orders Will Display Here With Full Information</div>
+    <Orders orders={userOrders} />
   )
 }
 
-export default Orders
+export default AllOrders
