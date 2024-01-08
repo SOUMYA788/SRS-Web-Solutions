@@ -62,12 +62,11 @@ export default function Home() {
           height={500}
           className="w-full h-full object-cover"
         />
-        <Link
-          href="https://wa.me/+919836567743"
-          className="absolute bottom-2 right-2 p-5 backdrop-blur-sm text-5xl uppercase transition rounded-full bg-[rgba(255,255,255,0.5)] hover:bg-[rgba(0,0,0,0.5)] hover:text-white"
-        >
+
+        <Link href="https://wa.me/+919836567743" className="absolute bottom-2 right-2 p-5 backdrop-blur-sm text-5xl uppercase transition rounded-full bg-[rgba(255,255,255,0.5)] hover:bg-[rgba(0,0,0,0.5)] hover:text-white">
           <BsWhatsapp />
         </Link>
+
       </section>
 
       <section className="my-10 mb-0 text-gray-600 body-font">

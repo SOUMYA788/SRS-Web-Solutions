@@ -1,3 +1,22 @@
+export const TOP_NAV_LINKS = [
+    {
+        id:"top_nav_link_1",
+        title:"home",
+        link:"/"
+    },
+    {
+        id:"top_nav_link_2",
+        title:"about",
+        link:"/about"
+    },
+    {
+        id:"top_nav_link_2",
+        title:"contact",
+        link:"/contact"
+    },
+
+]
+
 export const ADMIN_DASHBOARD_LINKS = [
     {
         id: "admin_dashboard_link_1",

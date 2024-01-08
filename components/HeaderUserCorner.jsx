@@ -1,6 +1,5 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { BiLogInCircle } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux';
 import { assignUser, removeUser, userLoggedIn } from '@/Redux/slices/userSlice';
@@ -8,10 +7,12 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
 
+import Link from 'next/link'
+
 
 const HeaderUserCorner = () => {
 
-    const [iconHover, setIconHover] = useState(false);
+    const [userLoginIconHover, setUserLoginIconHover] = useState(false);
     const [logoutProcess, setLogoutProcess] = useState(false);
 
     const router = useRouter();
@@ -21,7 +22,7 @@ const HeaderUserCorner = () => {
     // return two values loggedIn and info, use both in return...
     const user = useSelector((state) => state.user)
 
-    const userIconHoverFunc = () => setIconHover(value => !value)
+    const userIconHoverFunc = () => setUserLoginIconHover(value => !value)
 
     const logout = async () => {
         setLogoutProcess(true)
@@ -43,7 +44,7 @@ const HeaderUserCorner = () => {
             showErrorToast('Faild to Logout')
         } finally {
             setLogoutProcess(false);
-            setIconHover(false);
+            setUserLoginIconHover(false);
         }
 
     }
@@ -90,13 +91,13 @@ const HeaderUserCorner = () => {
                         </div>
                     }
 
-                    <div className={`absolute top-16 right-5 p-3 bg-gray-100 rounded-md ${iconHover ? "block" : "hidden"} shadow-md border-2 select-none`}>
+                    <div className={`absolute top-16 right-5 p-3 bg-gray-100 rounded-md ${userLoginIconHover ? "block" : "hidden"} shadow-md border-2 select-none`}>
 
                         {user?.value?.userName && <h2 className='text-center text-gray-600 mb-1'> {user?.value?.userName} </h2>}
 
                         {user?.value?.userEmail && <p className='text-center text-gray-400 text-xs mb-3'> {user?.value?.userEmail} </p>}
 
-                        <Link href={`/${user?.value?.role === "admin" ? "admin" : "dashboard"}/${user?.value?._id}/`} className='text-gray-600 text-xs p-1 my-1 cursor-pointer capitalize tracking-wider' onClick={() => setIconHover(false)}>dashbord</Link>
+                        <Link href={`/${user?.value?.role === "admin" ? "admin" : "dashboard"}/${user?.value?._id}/`} className='text-gray-600 text-xs p-1 my-1 cursor-pointer capitalize tracking-wider' onClick={() => setUserLoginIconHover(false)}>dashbord</Link>
 
                         <button type="button" disabled={logoutProcess} className='w-full text-white font-semibold text-xs cursor-pointer text-center bg-red-500 mx-auto px-2 py-1 mt-3 uppercase tracking-wider disabled:opacity-50' onClick={logout}>{logoutProcess ? "Processing" : "logout"}</button>
                     </div>

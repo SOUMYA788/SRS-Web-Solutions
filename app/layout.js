@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <main className="w-full container mx-auto">
+        <main className="w-full container mx-auto min-h-screen relative">
 
           <CustomLoadingBar />
 
