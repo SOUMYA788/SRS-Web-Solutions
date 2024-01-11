@@ -8,7 +8,7 @@ const DashboardNav = ({ userId, forAdmin }) => {
 
             {
                 forAdmin && ADMIN_DASHBOARD_LINKS.map(({id, title, link}) => (
-                    <NavLink key={id} navRef={`/admin/${userId}${link}`} navLinkClass="p-2 bg-blue-500 text-white uppercase text-center tracking-wide rounded-md opacity-100 transition-colors border-2 text-sm" activeNavClass="border-blue-700">
+                    <NavLink key={id} navRef={`/admin/${userId}${link}`} className="p-2 bg-blue-500 text-white uppercase text-center tracking-wide rounded-md opacity-100 transition-colors border-2 text-sm" activeNavClass="border-blue-700">
                         {title}
                     </NavLink>
                 ))
@@ -16,7 +16,7 @@ const DashboardNav = ({ userId, forAdmin }) => {
 
             {
                 !forAdmin && USER_DASHBOARD_LINKS.map(({id, title, link}) => (
-                    <NavLink key={id} navRef={`/admin/${userId}${link}`} navLinkClass="p-2 bg-blue-500 text-white uppercase text-center tracking-wide rounded-md opacity-100 transition-colors border-2 text-sm" activeNavClass="border-blue-700">
+                    <NavLink key={id} navRef={`/admin/${userId}${link}`} className="p-2 bg-blue-500 text-white uppercase text-center tracking-wide rounded-md opacity-100 transition-colors border-2 text-sm" activeNavClass="border-blue-700">
                         {title}
                     </NavLink>
                 ))

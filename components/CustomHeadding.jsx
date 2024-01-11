@@ -1,9 +1,10 @@
 import React from 'react'
 
-const CustomHeadding = ({headdingTitle, useFor}) => {
+const CustomHeadding = ({headdingTitle, useFor, textSize}) => {
+
     return (
         <>
-            <h2 className={`m-4 mb-0 text-3xl font-bold uppercase text-center text-gray-600 ${useFor === "admin" ? "italic" : ""}`}>
+            <h2 className={`sm:m-4 mb-0 ${textSize || "text-base sm:text-3xl text-gray-600"} font-bold uppercase text-center  ${(useFor === "admin" || useFor === "admin_form") ? "italic" : ""}`}>
                 {headdingTitle}
             </h2>
 

@@ -1,6 +1,6 @@
 "use client"
 import React,{useState} from 'react'
-import CustomInputType1 from '../FormElements/CustomInput';
+import {CustomInputType1} from '../FormElements/CustomInput';
 import {CustomButton} from '../FormElements/CustomButton';
 import Link from 'next/link';
 
@@ -49,9 +49,9 @@ const ForgetPasswordForm = () => {
 
             <CustomButton btnName="reset" btnType="submit" btnOnClick={submitForgetForm} btnDisabled={btnDisabled} />
 
-            <p className="mt-2">Already signup! <Link href="/login" className="font-semibold text-black border-none px-2 py-1">login</Link> here.</p>
+            <p className="mt-2 dark:text-slate-400">Already signup! <Link href="/login" className="font-semibold text-black dark:text-white border-none px-2 py-1">login</Link> here.</p>
 
-            <p>Need a new account! <Link href="/signup" className="font-semibold text-black border-none px-2 py-1">signup</Link> here.</p>
+            <p className="dark:text-slate-400">Need a new account! <Link href="/signup" className="font-semibold text-black dark:text-white border-none px-2 py-1">signup</Link> here.</p>
 
         </form>
     )

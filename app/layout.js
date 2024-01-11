@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomLoadingBar from '@/components/CustomLoadingBar'
 import StoreProvider from '@/Providers/StoreProvider';
+import CustomThemeProvider from '@/Providers/CustomThemeProvider';
 
 export const metadata = {
   title: "SRS WEB SOLUTIONS",
@@ -15,10 +16,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <main className="w-full container mx-auto min-h-screen relative">
+        <CustomThemeProvider>
 
           <CustomLoadingBar />
-
           <ToastContainer
             position="bottom-center"
             autoClose={500}
@@ -33,12 +33,17 @@ export default function RootLayout({ children }) {
           />
 
           <StoreProvider>
-            <Header />
-            {children}
-            <Footer />
+
+            <main className="w-full mx-auto min-h-screen relative dark:bg-slate-800 p-2 -z-20">
+              <Header />
+              {children}
+              <Footer />
+            </main>
+
           </StoreProvider>
-          
-        </main>
+
+        </CustomThemeProvider>
+
       </body>
     </html>
   )

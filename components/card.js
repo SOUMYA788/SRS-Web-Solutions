@@ -1,35 +1,34 @@
 import React from 'react'
+import Image from 'next/image'
 
-const Card = ({ contentArray, cardHeight, text_center }) => {
+const Card = ({ cardContent, className, text_center }) => {
+
     const createMarkup = (c) => {
         return { __html: c }
     }
+
+    const Cardimage = cardContent?.img
+
     return (
         <>
-            {
-                contentArray.map(({ id, Img, title, name, desc }, contentIndex) => (
-                    <div
-                        key={id}
-                        className={`mb-5 px-6 py-4 w-full sm:w-[200px] md:w-[30%] ${cardHeight || "h-[336px]"} border-2 border-gray-200 border-opacity-80 rounded-lg shadow hover:shadow-lg transition`}
-                    >
-                        {Img && <div className="w-16 h-16 border-2 border-slate-400 rounded-full mx-auto p-4">
-                            <Img className="w-full h-full object-cover" />
-                        </div>
+            <div className={`p-2 dark:text-slate-400 flex border-2 border-gray-200 border-opacity-80 rounded-md shadow hover:shadow-lg transition ${className}`}
+            >
+                {
+                    cardContent?.img && <div className={`w-16 h-16 mx-auto flex items-center justify-center`}>
+                        {
+                            (typeof cardContent?.img !== "string") ? <Cardimage className="w-full h-full p-4 border-2 border-slate-400 rounded-full" /> : <Image src={cardContent?.img} width={100} height={100} className={"w-full h-full object-cover border-2 border-slate-400"} />
                         }
-                        <div className={`${Img&&'py-4'}`}>
-                            {
-                                title && <p className="text-xs text-slate-500 my-1 uppercase">
-                                    {title}
-                                </p>
-                            }
-                            <h2 className={`text-lg ${text_center && "text-center"} font-semibold text-gray-900 capitalize`}>
-                                {name}
-                            </h2>
-                            <p className={`leading-relaxed ${text_center && "text-center"} text-sm text-justify`} dangerouslySetInnerHTML={createMarkup(desc)} />
-                        </div>
                     </div>
-                ))
-            }
+                }
+
+                <div className="w-full h-full flex-1 p-1">
+                    {cardContent?.title && <p className="text-xs mb-1 dark:text-slate-500 uppercase">{cardContent.title}</p>}
+
+                    <h2 className={`text-lg ${text_center && "text-center"} font-semibold text-gray-900 dark:text-white capitalize`}> {cardContent?.name} </h2>
+
+                    <p className={`leading-relaxed ${text_center && "text-center"} text-sm dark:text-slate-400 text-justify`} dangerouslySetInnerHTML={createMarkup(cardContent?.desc)} />
+                </div>
+            </div>
         </>
     )
 }

@@ -13,11 +13,11 @@ export const metadata = {
 const Contact = () => {
     return (
         <>
-            <Image alt='logo' src="/images/logo.png" height={35} width={35} className='m-auto mt-5 rounded-full object-contain border-2 border-gray-600' />
+            <Image alt='logo' src="/images/logo.png" height={50} width={50} className='w-14 h-14 m-auto mt-5 rounded-full object-contain border-2 border-gray-600' />
 
             <CustomHeadding headdingTitle="Get in Touch" />
 
-            <section className="w-full md:w-1/2 mx-auto mt-8">
+            <section className="w-full xs:w-[300px] mx-auto mt-8">
                 <ContactForm />
             </section>
 

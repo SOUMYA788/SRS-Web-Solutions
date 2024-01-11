@@ -25,7 +25,7 @@ const Dashboard = async () => {
                     
                      <UserProfileCardOne user={user} />
 
-                    <div className='w-full flex-1 bg-slate-200 bg-opacity-60 border-slate-400 border-2 md:shadow-md rounded-lg p-2 h-fit'>
+                    <div className='w-full flex-1 bg-slate-200 dark:bg-slate-800 bg-opacity-60 dark:bg-opacity-80 border-slate-400 border-2 md:shadow-md rounded-lg p-2 h-fit'>
                         {/* USER INFORMATION EDITING FORM */}
                         <DashboardForm />
                     </div>

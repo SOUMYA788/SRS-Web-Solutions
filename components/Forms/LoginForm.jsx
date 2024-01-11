@@ -90,7 +90,7 @@ const LoginForm = ({adminForm}) => {
 
     return (
         <>
-            <form method="post" className="w-full mx-auto my-16 md:w-2/5 flex flex-col gap-3 text-slate-800">
+            <form method="post" className="w-full mx-auto my-16 flex flex-col gap-3 text-slate-800">
                 <CustomInputType1 inputType="email" inputName="loginEmail" inputPlaceHolder="Enter Your Email ID" inputValue={loginDetails?.loginEmail} inputOnChange={inputOnChange} inputError={loginEmailError} />
 
 
@@ -98,9 +98,9 @@ const LoginForm = ({adminForm}) => {
 
                 <CustomButton btnType="submit" btnName="submit" btnDisabled={btnDisabled} btnOnClick={clickSubmit} formProcessing={processing} />
 
-                <p className="mt-2 text-center">Need a new account! <Link href={adminForm ? "/admin/signup" : "/signup"} className="font-semibold text-black border-none p-1">signup</Link> here.</p>
+                <p className="mt-2 text-center dark:text-slate-400">Need a new account! <Link href={adminForm ? "/admin/signup" : "/signup"} className="font-semibold text-black dark:text-white border-none p-1">signup</Link> here.</p>
 
-                <p className="mt-1 text-center"><Link href={adminForm ? "/admin/forgetpassword" : "/forgetpassword"} className="font-semibold text-black border-none p-1">Forget</Link> Your Password!</p>
+                <p className="mt-1 text-center dark:text-slate-400"><Link href={adminForm ? "/admin/forgetpassword" : "/forgetpassword"} className="font-semibold text-black dark:text-white border-none p-1">Forget</Link> Your Password!</p>
             </form>
         </>
     )

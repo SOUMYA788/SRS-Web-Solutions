@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import CustomInputType1 from '../FormElements/CustomInput';
+import {CustomInputType1} from '../FormElements/CustomInput';
 import CustomTextarea from '../FormElements/CustomTextarea';
 import {CustomButton} from '../FormElements/CustomButton';
 
@@ -83,7 +83,7 @@ const ContactForm = () => {
 
     return (
         <>
-            <form method="post" className="w-full flex flex-col gap-4 text-slate-800">
+            <form method="post" className="w-full flex flex-col gap-4 text-slate-800 ">
 
                 <CustomInputType1 inputType="email" inputName="userEmail" inputPlaceHolder="Your Email ID" inputValue={userDetails?.userEmail} inputOnChange={handleInput} inputError={formErrors?.userEmail} />
 
@@ -91,7 +91,7 @@ const ContactForm = () => {
 
                 <CustomButton btnName="Send Message" btnType="submit" btnOnClick={submitContact} btnDisabled={disableButton} />
 
-                <p className="mt-2 text-xs text-gray-600">
+                <p className="mt-2 text-xs text-gray-600 dark:text-slate-400">
                     We'll get back to you within 48 hours.
                 </p>
 
