@@ -1,12 +1,12 @@
 import React from 'react'
 
 // used in login, signup
-export const CustomInputType1 = ({ inputType, inputName, inputPlaceHolder, inputValue, inputOnChange, inputError, inputRequired, inputLabel }) => {
+export const CustomInputType1 = ({ inputType, inputName, inputPlaceHolder, inputValue, inputOnChange, inputError, inputRequired, inputLabel, inputDisabled }) => {
     return (
         <div className="flex flex-col gap-1">
             {inputLabel && <label htmlFor={inputName} className="text-sm text-gray-500">{inputLabel}</label>}
 
-            <input type={inputType} name={inputName} placeholder={inputPlaceHolder} value={inputValue} onChange={inputOnChange} className={`w-full p-3 text-sm dark:text-slate-400 outline-none border-2 border-gray-400 dark:border-gray-500 bg-transparent rounded-md focus:border-gray-500 dark:focus:border-gray-400 ${inputError ? 'border-red-500' : 'border-gray-400'}`} required={inputRequired} />
+            <input id={inputName} type={inputType} name={inputName} placeholder={inputPlaceHolder || ""} value={inputValue} onChange={inputOnChange} className={`w-full p-3 text-sm dark:text-slate-400 outline-none border-2 border-gray-400 dark:border-gray-500 bg-transparent rounded-md focus:border-gray-500 dark:focus:border-gray-400 ${inputError ? 'border-red-500' : 'border-gray-400'}`} required={inputRequired} disabled={inputDisabled}/>
         </div>
     )
 }

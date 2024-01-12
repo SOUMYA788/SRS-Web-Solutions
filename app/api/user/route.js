@@ -1,28 +1,28 @@
+import { getUserData } from "@/utils/getUsersData";
 import { NextResponse } from "next/server"
-import { getUserData } from "@/utils/getUserData"
+
 
 export const GET = async (req) => {
     try {
-        const validUser = await getUserData(req, null);
+        const { success, message, data } = await getUserData(req);
 
-        if (!validUser) {
+        if (!success) {
             return NextResponse.json({
-                success: false,
+                success,
                 message: "Please refresh the browser or login again"
             }, { status: 400 })
         }
 
         return NextResponse.json({
-            success: true,
-            message: "user found",
-            userInfo: JSON.parse(validUser)
+            success, message,
+            data: JSON.parse(data)
         }, { status: 200 })
 
     } catch (error) {
         return NextResponse.json({
             success: false,
-            message: "Some Error Occoured",
-            error: JSON.parse(error.message)
+            message: error.message || "User Not Found",
+            data: null
         }, { status: 500 })
     }
 }

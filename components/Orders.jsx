@@ -40,7 +40,7 @@ export const Orders = ({ orders }) => {
             setOrdersArray(ordersArr) 
         }
 
-    }, [ordersArr, filter])
+    }, [ordersArr, filter, setOrdersArray])
 
 
 
@@ -48,9 +48,9 @@ export const Orders = ({ orders }) => {
         <section className="w-full">
 
             <div className="w-full flex flex-row flex-wrap justify-between items-center gap-3 mb-2">
-                <h2 className="text-base font-semibold tracking-wide text-slate-700 uppercase">{filter ? "Available Orders" : "All Orders"}</h2>
+                <h2 className="text-base font-semibold tracking-wide text-slate-700 dark:text-slate-400 uppercase">{filter ? "Available Orders" : "All Orders"}</h2>
 
-                <input type="search" name="searchOrders" placeholder="search orders" value={filter} onChange={(e) => setFilter(e.target.value)} className="text-sm outline-none w-full md:w-60 p-2 bg-blue-100 text-blue-500 border-2 border-blue-300 focus:border-blue-500 hover:border-blue-500 transition-colors placeholder:text-blue-400 rounded-md" />
+                <input type="search" name="searchOrders" placeholder="search orders" value={filter} onChange={(e) => setFilter(e.target.value)} className="text-sm outline-none w-full md:w-60 p-2 bg-blue-100 dark:bg-slate-700 text-blue-500 dark:text-slate-300 border-2 border-blue-300 dark:border-slate-400 focus:border-blue-500 hover:border-blue-500 transition-colors rounded-md" />
             </div>
 
             {/* current orders */}

@@ -4,26 +4,65 @@ import { Orders } from '@/components/Orders';
 import { Payments } from '@/components/Payments';
 import { UserProfileCardTwo } from '@/components/cards/UserProfileCardTwo';
 import { dateAndTimeFormatter } from '@/utils/dateAndTimeFormatter';
-import { getUserData } from '@/utils/getUserData';
 import { getUserOrders } from '@/utils/getUserOrders';
+import { getUserData } from '@/utils/getUsersData';
 import React from 'react'
 
 
 const Details = async ({ params }) => {
   const userId = params.user;
-  
 
-  const stringifyUserData = await getUserData(null, null, userId, process.env.LOGIN_SECRET);
-  const userData = JSON.parse(stringifyUserData); // userData is not admin's data
+
+  const { success, data } = await getUserData(null, null, userId, process.env.LOGIN_SECRET);
+  const userData = success && JSON.parse(data); // userData is not admin's data
 
   const stringifyOrders = await getUserOrders(null, null, userData?._id, process.env.LOGIN_SECRET);
   const userOrders = stringifyOrders ? JSON.parse(stringifyOrders) : null;
 
 
+  const personalInformation = [
+    {
+      id: "personalInfo_1",
+      headding: "user id",
+      title: userData?._id,
+    },
+    {
+      id: "personalInfo_2",
+      headding: "user name",
+      title: userData?.userName,
+    },
+    {
+      id: "personalInfo_3",
+      headding: "user email",
+      title: userData?.userEmail,
+    },
+    {
+      id: "personalInfo_4",
+      headding: "user phone",
+      title: userData?.userPhone,
+    },
+    {
+      id: "personalInfo_5",
+      headding: "profile background color",
+      title: userData?.userProfileBackgroundColor,
+    },
+    {
+      id: "personalInfo_6",
+      headding: "profile created at",
+      title: userData?.createdAt,
+    },
+    {
+      id: "personalInfo_7",
+      headding: "profile updated at",
+      title: userData?.createdAt,
+    },
+  ]
+
+
   return (
     <>
       <section className="w-full">
-        <h2 className="text-lg font-semibold tracking-wide text-slate-700 mb-2 uppercase">PROFILE</h2>
+        <h2 className="text-lg font-semibold tracking-wide text-slate-700 dark:text-slate-400 mb-2 uppercase">PROFILE</h2>
 
         <UserProfileCardTwo cardWidth="w-56" user={userData} />
       </section>
@@ -31,49 +70,17 @@ const Details = async ({ params }) => {
 
       <section className="w-full my-3">
 
-        <h2 className="text-lg font-semibold tracking-wide text-slate-700 mb-2 uppercase">personal details</h2>
+        <h2 className="text-lg font-semibold tracking-wide text-slate-700 dark:text-slate-400 mb-2 uppercase">personal details</h2>
 
-        <BorderContainerStyle1>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">user id</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8">{userData?._id}</p>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">user name</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8">{userData?.userName}</p>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">user email</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8">{userData?.userEmail}</p>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">user phone</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8">{userData?.userPhone}</p>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">profile color</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8">{userData?.userProfileColor}</p>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">profile background color</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8">{userData?.userProfileBackgroundColor}</p>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">profile created at</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8"> {dateAndTimeFormatter(userData?.createdAt)}</p>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-[30%] xl:w-1/4">
-            <h2 className="uppercase text-xs text-gray-600 mb-2">profile updated at</h2>
-            <p className="w-full bg-gray-100 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8"> {dateAndTimeFormatter(userData?.updatedAt)}</p>
-          </div>
+        <BorderContainerStyle1 className="py-5">
+          {
+            personalInformation.map(({ id, headding, title }) => (
+              <div key={id} className="w-full xs:w-3/4 sm:w-full md:w-[45%] xl:w-[30%] text-base xl:text-lg mx-auto sm:mx-0 my-2">
+                <h2 className="uppercase text-gray-600 dark:text-slate-400 mb-2">{headding}</h2>
+                <p className="w-full bg-gray-100 dark:bg-slate-700 dark:text-slate-300 rounded border border-gray-300 text-sm text-gray-700 py-1 px-2 leading-8">{title}</p>
+              </div>
+            ))
+          }
         </BorderContainerStyle1>
       </section >
 

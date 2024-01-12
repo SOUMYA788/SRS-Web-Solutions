@@ -11,7 +11,7 @@ const Card = ({ cardContent, className, text_center }) => {
 
     return (
         <>
-            <div className={`p-2 dark:text-slate-400 flex border-2 border-gray-200 border-opacity-80 rounded-md shadow hover:shadow-lg transition ${className}`}
+            <div className={`w-fit mx-auto p-2 dark:text-slate-400 flex border-2 border-gray-200 border-opacity-80 rounded-md shadow hover:shadow-lg transition ${className}`}
             >
                 {
                     cardContent?.img && <div className={`w-16 h-16 mx-auto flex items-center justify-center`}>

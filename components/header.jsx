@@ -1,23 +1,20 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { BiLogInCircle, BiToggleLeft } from 'react-icons/bi'
+import { BiLogInCircle } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux';
 import { assignUser, removeUser, userLoggedIn } from '@/Redux/slices/userSlice';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link'
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
-import HeaderUserCorner from '@/components/HeaderUserCorner';
 import { TOP_NAV_LINKS } from '@/constants';
 import NavLink from './NavLink';
 
 import { IoMenu } from "react-icons/io5"
 import ThemeSwitch from './ThemeSwitch';
-import { useTheme } from 'next-themes';
 
 const Header = () => {
-const {theme}=useTheme()
     const [showTopNav, setShowTopNav] = useState(false);
     const [userLoginIconHover, setUserLoginIconHover] = useState(false);
     const [logoutProcess, setLogoutProcess] = useState(false);
@@ -65,16 +62,16 @@ const {theme}=useTheme()
                     dispatch(userLoggedIn(false))
                     dispatch(removeUser())
                 } else {
-                    const { success, userInfo } = await response.json();
+                    const { success, data } = await response.json();
                     dispatch(userLoggedIn(success))
-                    dispatch(assignUser(userInfo))
+                    dispatch(assignUser(data))
                 }
             } catch (error) {
                 console.log("faild to get profile");
             }
         }
         getUserData()
-    }, [user.loggedIn, theme])
+    }, [user.loggedIn])
 
 
 

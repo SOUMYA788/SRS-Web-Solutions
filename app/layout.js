@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
 
           <StoreProvider>
 
-            <main className="w-full mx-auto min-h-screen relative dark:bg-slate-800 p-2 -z-20">
+            <main className="w-full mx-auto min-h-screen relative dark:bg-slate-800 p-2">
               <Header />
               {children}
               <Footer />

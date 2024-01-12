@@ -21,7 +21,7 @@ export default function Home() {
           className="w-full h-full object-cover hidden sm:flex"
         />
 
-        <Link href="https://wa.me/+919836567743" className="w-20 h-20 fixed sm:absolute bottom-2 right-2 backdrop-blur-sm uppercase transition rounded-full bg-[rgba(255,255,255,0.5)] dark:bg-slate-800 dark:text-slate-400 hover:bg-[rgba(0,0,0,0.5)] hover:text-white overflow-hidden">
+        <Link href="https://wa.me/+919836567743" className="w-16 h-16 sm:w-20 sm:h-20 fixed sm:absolute bottom-2 right-2 backdrop-blur-sm uppercase transition rounded-full bg-[rgba(255,255,255,0.5)] dark:bg-slate-700 dark:text-slate-300 hover:bg-[rgba(0,0,0,0.5)] hover:text-white overflow-hidden">
           <BsWhatsapp className="w-full h-full p-3 sm:p-5 rounded-full" />
         </Link>
 
@@ -40,8 +40,8 @@ export default function Home() {
         </div>
 
         <div className="w-full">
-          <h2 className="dark:text-white px-5 sm:hidden"> Our Services and Technologies We Work With  </h2>
-          <div className="mx-auto flex flex-wrap gap-8 p-5">
+          <h2 className="dark:text-slate-200 px-5 mb-3 sm:hidden"> Our Services and Technologies We Work With  </h2>
+          <div className="w-full mx-auto flex flex-wrap gap-8">
           {OUR_SERVICES.map(service => (
             <Card key={service?.id} cardContent={service} text_center={false} className="items-center sm:w-72 sm:h-72 md:w-[30%] flex-row sm:flex-col"/>
           ))}

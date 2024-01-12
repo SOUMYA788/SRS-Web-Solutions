@@ -7,7 +7,7 @@ export default async function AdminDashboardLayout({ children }) {
     const cookiesStore = cookies();
     const userId = await getTokenData(null, cookiesStore);
     return (
-        <div className='w-full flex flex-row justify-between gap-2'>
+        <div className='w-full flex flex-col sm:flex-row justify-between gap-2'>
             <DashboardNav userId={userId} forAdmin={true}/>
             <section className='w-full flex flex-col px-2 py-3 gap-2 relative'>
                 {children}

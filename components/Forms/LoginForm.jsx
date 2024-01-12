@@ -100,7 +100,7 @@ const LoginForm = ({adminForm}) => {
 
                 <p className="mt-2 text-center dark:text-slate-400">Need a new account! <Link href={adminForm ? "/admin/signup" : "/signup"} className="font-semibold text-black dark:text-white border-none p-1">signup</Link> here.</p>
 
-                <p className="mt-1 text-center dark:text-slate-400"><Link href={adminForm ? "/admin/forgetpassword" : "/forgetpassword"} className="font-semibold text-black dark:text-white border-none p-1">Forget</Link> Your Password!</p>
+                <p className="mt-1 text-center dark:text-slate-400"><Link href="/forgetpassword" className="font-semibold text-black dark:text-white border-none p-1">Forget</Link> Your Password!</p>
             </form>
         </>
     )

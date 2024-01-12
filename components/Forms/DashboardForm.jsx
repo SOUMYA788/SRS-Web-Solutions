@@ -1,13 +1,14 @@
 "use client"
 import React, { useState, useEffect } from 'react'
-import {CustomButton} from '../FormElements/CustomButton'
+import { CustomButton } from '../FormElements/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { assignUser } from '@/Redux/slices/userSlice'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { BiCloudUpload } from 'react-icons/bi'
 import { showErrorToast, showSuccessToast } from '@/utils/showToast'
+import { CustomInputType1 } from '../FormElements/CustomInput'
+import { validateEmail } from '@/utils/varifyInput'
 
 
 
@@ -15,14 +16,25 @@ import { showErrorToast, showSuccessToast } from '@/utils/showToast'
 
 const DashboardForm = () => {
     // name, email, phone, profileColor, profileBackground
-    const user = useSelector((state) => state.user.value)
-    const dispatch = useDispatch()
-    const router = useRouter()
+    const user = useSelector((state) => state.user.value);
+
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     const [formProcessing, setFormProcessing] = useState(false);
     const [formDisabled, setFormDisabled] = useState(true);
-    const [userDetails, setUserDetails] = useState(null);
-    const [detailError, setDetailError] = useState({})
+    const [userDetails, setUserDetails] = useState({
+        userName: "",
+        userEmail:"",
+        userPhone:"",
+        userProfileBackgroundColor:"",
+        userProfileColor:"",
+        userProfilePicture:"",        
+    });
+
+    console.log("userDetails in userDashboard", userDetails)
+
+    const [detailError, setDetailError] = useState({});
 
     const setError = (errorKey, errorValue) => {
         setDetailError({
@@ -65,11 +77,6 @@ const DashboardForm = () => {
             userProfilePicture
         })
     }
-
-    const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
 
     const validateNumber = (number) => {
         if (!number.length === 10 || !number.length === 12 || !parseInt(number)) return false
@@ -128,14 +135,14 @@ const DashboardForm = () => {
             }
 
             dispatch(assignUser({ ...user, ...updatedProfile }))
-            showSuccessToast('Profile Updated Succesfully');
 
+            showSuccessToast('Profile Updated Succesfully');
         } catch (error) {
-            showErrorToast(error.message);
+            showErrorToast(error.message || "Faild to update profile");
         } finally {
             router.refresh();
-            setFormDisabled(true)
-            setFormProcessing(false)
+            setFormDisabled(true);
+            setFormProcessing(false);
         }
     }
 
@@ -144,30 +151,70 @@ const DashboardForm = () => {
         setFormDisabled((value) => !value);
     }
 
+
+    const formInputSlotData = [
+        {
+            id: "form_input_1",
+            inputType: "text",
+            inputLabel: "Username",
+            inputValue: userDetails?.userName || "",
+            inputName: "userName",
+        },
+        {
+            id: "form_input_2",
+            inputType: "email",
+            inputLabel: "Email",
+            inputValue: userDetails?.userEmail || "",
+            inputName: "userEmail",
+        },
+        {
+            id: "form_input_3",
+            inputType: "text",
+            inputLabel: "Phone Number",
+            inputValue: userDetails?.userPhone || "",
+            inputName: "userPhone",
+        },
+        {
+            id: "form_input_4",
+            inputType: "text",
+            inputLabel: "Profile Background Color",
+            inputValue: userDetails?.userProfileBackgroundColor || "",
+            inputName: "userProfileBackgroundColor",
+        },
+        {
+            id: "form_input_5",
+            inputType: "text",
+            inputLabel: "Profile Color",
+            inputValue: userDetails?.userProfileColor || "",
+            inputName: "userProfileColor",
+        },
+    ]
+
+
     useEffect(() => {
-        fetch("/api/user")
-            .then(response => response.json())
-            .then(userInfo => setUserDetails(userInfo?.userInfo))
-            .catch(error => console.log(error.message))
-    }, [])
+        setUserDetails({
+            ...userDetails,
+            ...user
+        });
+    }, [user])
 
 
     return (
         <>
             <div className="w-full flex flex-row justify-between items-center px-2 py-1">
-                <h2 className='text-center text-2xl font-semibold p-2 text-slate-800 tracking-wide'>
+                <h2 className='text-center text-2xl font-semibold p-2 text-slate-800 dark:text-slate-300 tracking-wide'>
                     DETAILS
                 </h2>
-                <button type="button" className={`border-2 ${formDisabled ? "bg-transparent capitalize border-blue-500 font-semibold focus:outline-blue-700 focus:bg-blue-500 hover:border-blue-700 hover:bg-blue-500 focus:text-white hover:text-white tracking-wider" : "bg-red-500 tracking-wider uppercase border-red-700 focus:outline-red-700 focus:rounded-full hover:rounded-sm"}  px-4 py-2 text-xs transition-colors`} onClick={changeEditMode}>
+                <button type="button" className={`outline-none border-2 ${formDisabled ? "bg-transparent capitalize border-blue-500 font-semibold focus:outline-blue-700 focus:bg-blue-500 hover:border-blue-700 hover:bg-blue-500 focus:text-white hover:text-white tracking-wider" : "bg-red-500 tracking-wider uppercase border-red-700 focus:outline-red-700 focus:rounded-full hover:rounded-sm"}  px-4 py-2 text-xs transition-colors`} onClick={changeEditMode}>
                     {formDisabled ? "edit profile" : "cancel"}
                 </button>
             </div>
 
-            <form action="" className='flex w-full sm:flex-row flex-col mx-auto px-8 border-2 border-slate-200 rounded-sm mt-3 gap-3 flex-wrap'>
+            <form action="" className='flex w-full sm:flex-row flex-col mx-auto px-8 border-2 dark:border-none border-slate-200 rounded-sm mt-3 gap-3 flex-wrap'>
 
                 <div className="w-full sm:w-48 sm:min-h-48">
                     <label htmlFor="userProfilePicture" className="w-full h-full leading-7 text-sm text-gray-600">
-                        <div className="w-full h-full bg-slate-200 shadow shadow-slate-600 border-2 border-slate-300 rounded-md overflow-hidden flex justify-center items-center text-4xl p-1">
+                        <div className="w-full h-full bg-slate-200 dark:bg-slate-700 shadow shadow-slate-600 dark:text-slate-400 border-2 border-slate-300 dark:border-slate-500 rounded-md overflow-hidden flex justify-center items-center text-4xl p-1">
                             <input type="file" name="userProfilePicture" id="userProfilePicture" onChange={formImageOnChange} className="hidden" disabled={formDisabled} accept=".jpeg, .png, .jpg" />
                             {
                                 userDetails?.userProfilePicture ? <Image src={`${userDetails?.userProfilePicture}`} alt="user" width={50} height={50} className="w-full object-contain rounded-md" /> : <BiCloudUpload />
@@ -176,32 +223,15 @@ const DashboardForm = () => {
                     </label>
                 </div>
 
-                <div className="relative flex-grow w-full">
-                    <label htmlFor="userName" className="leading-7 text-sm text-gray-600">Username</label>
-                    <input type="text" name="userName" value={userDetails?.userName || ""} onChange={detailsOnChange} className="w-full bg-gray-100 bg-opacity-70 rounded border border-gray-300 focus:border-gray-500 focus:bg-transparent focus:ring-2 focus:ring-gray-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out disabled:opacity-75" disabled={formDisabled} />
-                </div>
+                {
+                    formInputSlotData.map(value => (
+                        <div key={value.id} className="relative flex-grow w-full">
+                            <CustomInputType1 inputType={value.inputType} inputLabel={value.inputLabel} inputValue={value.inputValue} inputName={value.inputName} inputOnChange={detailsOnChange} inputDisabled={formDisabled} />
+                        </div>
+                    ))
+                }
 
-                <div className="relative flex-grow w-full">
-                    <label htmlFor="userEmail" className="leading-7 text-sm text-gray-600">Email</label>
-                    <input type="email" name="userEmail" value={userDetails?.userEmail || ""} onChange={detailsOnChange} className="w-full bg-gray-100 bg-opacity-70 rounded border border-gray-300 focus:border-gray-500 focus:bg-transparent focus:ring-2 focus:ring-gray-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out disabled:opacity-75" disabled={formDisabled} />
-                </div>
-
-                <div className="relative flex-grow w-full">
-                    <label htmlFor="userPhone" className="leading-7 text-sm text-gray-600">Phone Number</label>
-                    <input type="text" name="userPhone" value={userDetails?.userPhone || ""} onChange={detailsOnChange} className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-gray-500 focus:bg-transparent focus:ring-2 focus:ring-gray-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out disabled:opacity-75" disabled={formDisabled} />
-                </div>
-
-                <div className="relative flex-grow w-full">
-                    <label htmlFor="userProfileColor" className="leading-7 text-sm text-gray-600">Profile Color</label>
-                    <input type="text" name="userProfileColor" value={userDetails?.userProfileColor || ""} onChange={detailsOnChange} className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-gray-500 focus:bg-transparent focus:ring-2 focus:ring-gray-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out disabled:opacity-75" disabled={formDisabled} />
-                </div>
-
-                <div className="relative flex-grow w-full mb-4">
-                    <label htmlFor="userProfileBackgroundColor" className="leading-7 text-sm text-gray-600">Profile Background Color</label>
-                    <input type="text" name="userProfileBackgroundColor" value={userDetails?.userProfileBackgroundColor || ""} onChange={detailsOnChange} className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-gray-500 focus:bg-transparent focus:ring-2 focus:ring-gray-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out disabled:opacity-75" disabled={formDisabled} />
-                </div>
-
-                <CustomButton btnDisabled={formDisabled} btnName={`${formProcessing ? "processing" : "update"}`} btnOnClick={submitUpdateProfile} />
+                <CustomButton btnDisabled={formDisabled} btnName={`${formProcessing ? "processing" : "update"}`} btnOnClick={submitUpdateProfile} className="mt-5"/>
 
             </form>
         </>
