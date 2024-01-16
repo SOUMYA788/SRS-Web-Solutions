@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import { screens as _screens } from "tailwindcss/defaultTheme";
 export const darkMode = 'class';
 export const content = [
   './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,7 +9,13 @@ export const theme = {
   extend: {
     screens: {
       'xs': '350px',
-      ..._screens,
+      '566px': '566px',
+      sm: '640px',
+      '734px': '734px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
     },
     backgroundImage: {
       animation: {

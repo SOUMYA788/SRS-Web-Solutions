@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 const PaymentCardWrapper = ({ children }) => {
     return (
-        <div className="w-40 h-40 flex flex-col items-center justify-center gap-5 rounded-md shadow-md text-gray-500 border border-slate-300 shadow-slate-400 tracking-wide">
+        <div className="w-40 h-40 flex flex-col items-center justify-center gap-5 rounded-md shadow-md text-gray-500 dark:text-slate-300 border border-slate-300 shadow-slate-400 dark:shadow-none tracking-wide">
             {children}
         </div>
     )
@@ -55,13 +55,13 @@ export const Payments = ({ payments }) => {
     return (
 
         <>
-            <section className="w-full flex flex-row flex-wrap gap-5 items-center justify-between px-3">
+            <section className="w-full flex flex-row flex-wrap gap-5 md:gap-6 items-center justify-between md:justify-center px-3">
 
                 {/* <h2 className="text-center capitalize text-base"> We have to work on this</h2> */}
 
                 {
                     !paymentsArray?.length > 0 && <div className="w-full">
-                        <p className="w-full text-center capitalize text-sm text-slate-500"> No Data Available</p>
+                        <p className="w-full text-center capitalize text-sm text-slate-500 dark:text-slate-300"> No Data Available</p>
                     </div>
                 }
 

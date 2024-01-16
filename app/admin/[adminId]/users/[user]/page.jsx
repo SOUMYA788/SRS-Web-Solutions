@@ -72,7 +72,7 @@ const Details = async ({ params }) => {
 
         <h2 className="text-lg font-semibold tracking-wide text-slate-700 dark:text-slate-400 mb-2 uppercase">personal details</h2>
 
-        <BorderContainerStyle1 className="py-5">
+        <BorderContainerStyle1 className="w-full py-5">
           {
             personalInformation.map(({ id, headding, title }) => (
               <div key={id} className="w-full xs:w-3/4 sm:w-full md:w-[45%] xl:w-[30%] text-base xl:text-lg mx-auto sm:mx-0 my-2">
@@ -82,6 +82,7 @@ const Details = async ({ params }) => {
             ))
           }
         </BorderContainerStyle1>
+
       </section >
 
       <section className="w-full my-3">
@@ -92,9 +93,9 @@ const Details = async ({ params }) => {
       </section>
 
       <section className="w-full my-3">
-        <h2 className="text-lg font-semibold tracking-wide text-slate-700 mb-2 uppercase">payment details</h2>
+        <h2 className="text-lg font-semibold tracking-wide text-slate-700 dark:text-slate-300 mb-2 uppercase">payment details</h2>
 
-        <BorderContainerStyle1>
+        <BorderContainerStyle1 className={"w-full"}>
           {
             <Payments payments={userOrders} />
           }

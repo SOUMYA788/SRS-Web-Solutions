@@ -4,8 +4,7 @@ import React from 'react'
 export const TransactionCard = ({ orderId, userId, orderPrice, orderStatus, orderPlaceTime, orderDeliveredDate, paidAmount, paymentStatus, paymentDate, cardHeight }) => {
 
   return (
-    <div className={`w-[250px] ${cardHeight || 'h-[300px]'} p-3 border-2 border-slate-400 flex flex-col justify-center gap-2 rounded-lg shadow-slate-500 hover:shadow-sm`}>
-
+    <div className={`w-full xs:w-[250px] 566px:w-[48%] sm:w-64 mx-auto 566px:mx-0 sm:mx-auto 734px:mx-0 ${cardHeight || 'h-[300px]'} p-3 border-2 border-slate-400 flex flex-col justify-center gap-2 rounded-lg shadow-slate-500 hover:shadow-sm`}>
 
       <h2 className='uppercase font-semibold mb-2 text-base dark:text-slate-200'>order id {orderId}</h2>
 

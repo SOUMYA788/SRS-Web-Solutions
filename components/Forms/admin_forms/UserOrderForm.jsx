@@ -120,11 +120,11 @@ export const UserOrderForm = ({ fromAdmin, formWidth, userId }) => {
         <>
             {
                 fromAdmin && <div className="w-full flex flex-row flex-wrap justify-between items-center gap-3 mb-3">
-                    <h2 className="text-lg font-semibold tracking-wide text-slate-700 uppercase">
+                    <h2 className="text-lg font-semibold tracking-wide text-slate-700 dark:text-slate-400 uppercase">
                         order details
                     </h2>
 
-                    <button type="button" className="text-2xl text-center border-2 outline-none focus:border-blue-500 hover:border-blue-500 rounded-md p-1" onClick={toggleForm}>
+                    <button type="button" className="text-2xl text-center border-2 outline-none focus:border-blue-500 hover:border-blue-500 dark:border-slate-400 dark:focus:border-slate-300 rounded-md p-1" onClick={toggleForm}>
                         <BiPencil className="text-blue-500" />
                     </button>
                 </div>

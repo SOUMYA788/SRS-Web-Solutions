@@ -11,7 +11,7 @@ const Earnings = async () => {
     <>
       <section className="w-full">
         <h2 className="uppercase font-semibold mb-2 text-base"> overall earnings</h2>
-        <BorderContainerStyle1>
+        <BorderContainerStyle1 className={'w-full'}>
           <Payments payments={userOrders} />
         </BorderContainerStyle1>
       </section>

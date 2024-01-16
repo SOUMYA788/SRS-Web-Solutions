@@ -29,7 +29,7 @@ const AdminHome = async () => {
     return (
         <>
             <section className='w-full flex flex-row px-2 py-3 gap-2 relative'>
-                <h2 className="font-semibold text-lg"> {greetAdmin()} <span className={`text-blue-500`}>{user?.userName}</span> </h2>
+                <h2 className="font-semibold text-lg dark:text-slate-400"> {greetAdmin()} <span className={`text-blue-500 dark:text-slate-200`}>{user?.userName}</span> </h2>
             </section>
 
             <UserProfilePage user={user} backgroundColor={user?.userProfileBackgroundColor} backgroundImage={user?.userProfileBackground} />

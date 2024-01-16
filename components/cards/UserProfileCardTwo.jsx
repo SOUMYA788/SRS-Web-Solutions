@@ -15,7 +15,7 @@ export const UserProfileCardTwo = ({ user, cardWidth }) => {
             {
                 !user?.userProfileBackgroundPicture && <FaImage className="w-full h-1/2 text-9xl rounded-md absolute top-0 object-top text-slate-200 bg-slate-800 dark:bg-slate-700 dark:text-slate-400" />
             }
-            <UserProfileCardOne user={user} cardWidth={cardWidth} />
+            <UserProfileCardOne user={user} cardWidth={"w-full"} />
         </div>
     )
 }
