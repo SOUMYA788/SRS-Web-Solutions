@@ -3,14 +3,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { CustomInputType1 } from '../FormElements/CustomInput'
-import {CustomButton} from '../FormElements/CustomButton'
+import { CustomButton } from '../FormElements/CustomButton'
 import { useDispatch } from 'react-redux';
 import { userLoggedIn } from '@/Redux/slices/userSlice';
 import { showErrorToast, showSuccessToast } from '@/utils/showToast';
 import { validateEmail } from '@/utils/varifyInput';
 
 
-const LoginForm = ({adminForm}) => {
+const LoginForm = ({ adminForm }) => {
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -32,7 +32,7 @@ const LoginForm = ({adminForm}) => {
         })
         setLoginEmailError(null)
     }
-    
+
 
     const clickSubmit = async (e) => {
         e.preventDefault();
@@ -40,7 +40,12 @@ const LoginForm = ({adminForm}) => {
         setProcessing(true)
         try {
             // validate email
-            if (!validateEmail(loginDetails?.loginEmail)) { setLoginEmailError("Invalid Email") }
+            if (!validateEmail(loginDetails?.loginEmail)) {
+                setLoginEmailError("Invalid Email")
+                showErrorToast("Invalid Email")
+                throw new Error("Invalid Error")
+            }
+            
             // make API Call for varification.
             const featchResponse = await fetch("/api/user/login", {
                 method: "POST",
@@ -51,7 +56,7 @@ const LoginForm = ({adminForm}) => {
             })
 
             if (featchResponse.ok) {
-                
+
                 const { userId } = await featchResponse.json();
                 console.log("response from login from for admin", userId);
                 // Valid User
@@ -101,6 +106,14 @@ const LoginForm = ({adminForm}) => {
                 <p className="mt-2 text-center dark:text-slate-400">Need a new account! <Link href={adminForm ? "/admin/signup" : "/signup"} className="font-semibold text-black dark:text-white border-none p-1">signup</Link> here.</p>
 
                 <p className="mt-1 text-center dark:text-slate-400"><Link href="/forgetpassword" className="font-semibold text-black dark:text-white border-none p-1">Forget</Link> Your Password!</p>
+
+
+
+                <Link href={adminForm ? `/login` : `/admin/login`} className="w-fit mx-auto mt-3 text-center font-semibold bg-slate-800 dark:bg-slate-700 text-slate-400 focus:text-slate-300 hover:text-slate-300 dark:text-slate-300 dark:focus:text-white dark:hover:text-white outline-none border-none px-4 py-2 transition-colors rounded text-sm">{adminForm ? "User Login" : "Admin Login"}</Link>
+
+                {/* <Link href={adminForm ? `/login` : `/admin/login`} className="mt-3 text-center font-semibold text-slate-800 focus:text-black hover:text-black dark:text-slate-300 dark:focus:text-white dark:hover:text-white outline-none border-none focus:underline transition-colors">{adminForm ? "User Login" : "Admin Login"}</Link> */}
+
+
             </form>
         </>
     )

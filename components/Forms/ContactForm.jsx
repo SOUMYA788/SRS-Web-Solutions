@@ -1,16 +1,19 @@
 "use client"
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import {CustomInputType1} from '../FormElements/CustomInput';
+import { CustomInputType1 } from '../FormElements/CustomInput';
 import CustomTextarea from '../FormElements/CustomTextarea';
-import {CustomButton} from '../FormElements/CustomButton';
+import { CustomButton } from '../FormElements/CustomButton';
+import { useSelector } from 'react-redux';
+import { showSuccessToast } from '@/utils/showToast';
 
 
 const ContactForm = () => {
     const router = useRouter()
+    const { userEmail } = useSelector(state => state.user.value);
 
     const [userDetails, setUserDetails] = useState({
-        userEmail: "",
+        userEmail: userEmail || "",
         userMessage: ""
     });
 
@@ -20,6 +23,8 @@ const ContactForm = () => {
     });
 
     const [disableButton, setDisableButton] = useState(false);
+
+    
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -72,7 +77,12 @@ const ContactForm = () => {
                     })
                 })
                 if (responce.ok) {
-                    router.push('/')
+                    setUserDetails({
+                        ...userDetails,
+                        userMessage: "",
+                    })
+
+                    showSuccessToast("Message Send Succesfully");
                 }
             }
         } catch (error) {

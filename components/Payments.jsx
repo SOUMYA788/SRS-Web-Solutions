@@ -35,18 +35,21 @@ export const Payments = ({ payments }) => {
         setPaidAmount(0);
         setUnpaidAmount(0);
 
-        const filterPaidArray = paymentsArray.filter(payments => payments?.paymentStatus?.toLowerCase() === "paid");
+        const filterPaidArray = paymentsArray?.filter(payments => payments?.paymentStatus?.toLowerCase() === "paid");
 
-        filterPaidArray.forEach(obj => { setPaidAmount(parseInt(paidAmount) + parseInt(obj?.orderPrice)) });
+        if (filterPaidArray?.length > 0) {
+            filterPaidArray.forEach(obj => { setPaidAmount(parseInt(paidAmount) + parseInt(obj?.orderPrice)) });
+        }
 
-        const filterUnPaidArray = paymentsArray.filter(payments => payments?.paymentStatus?.toLowerCase() === "unpaid");
+        const filterUnPaidArray = paymentsArray?.filter(payments => payments?.paymentStatus?.toLowerCase() === "unpaid");
 
-
-        filterUnPaidArray.map((obj) => {
-            setUnpaidAmount((value) => {
-                return (value + obj?.orderPrice)
-            })
-        });
+        if (filterUnPaidArray?.length > 0) {
+            filterUnPaidArray.map((obj) => {
+                setUnpaidAmount((value) => {
+                    return (value + obj?.orderPrice)
+                })
+            });
+        }
 
     }, [paymentsArray])
 
@@ -66,7 +69,7 @@ export const Payments = ({ payments }) => {
                 }
 
                 {
-                    paymentsArray.length > 0 && <>
+                    paymentsArray?.length > 0 && <>
 
                         <PaymentCardWrapper>
                             <p className="text-base uppercase">RECEIVED</p>

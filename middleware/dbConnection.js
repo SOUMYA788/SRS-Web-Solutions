@@ -11,12 +11,13 @@ const dbConnection = async () => {
             return
         }
 
+        console.log("MONGODB URI", process.env.MONGODB_URI);
         await mongoose.connect(process.env.MONGODB_URI);
         isConnected = true;
         console.log("MongoDB is Connected Now");
         return
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 }
 

@@ -41,6 +41,11 @@ export const ADMIN_DASHBOARD_LINKS = [
         title: "earnings",
         link: "/earnings"
     },
+    {
+        id: "admin_dashboard_link_5",
+        title: "messages",
+        link: "/messages"
+    },
 ]
 
 export const USER_DASHBOARD_LINKS = [

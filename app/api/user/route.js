@@ -14,6 +14,7 @@ export const GET = async (req) => {
         }
 
         return NextResponse.json({
+        
             success, message,
             data: JSON.parse(data)
         }, { status: 200 })

@@ -9,7 +9,9 @@ export const POST = async (req) => {
 
     try {
         await dbConnection();
+        
         const accountInfo = await UserModel.findOne({ userEmail: loginEmail })
+
 
         if (!accountInfo) {
             return new Response(JSON.stringify({
@@ -17,7 +19,9 @@ export const POST = async (req) => {
                 error: "Please Enter Valid Credentials"
             }), { status: 400 })
         }
- 
+
+        console.log("User Info", accountInfo);        
+
         const userHashPassword = await accountInfo.userPassword;
 
         const passwordMatch = await bcryptjs.compare(loginPassword, userHashPassword)
@@ -33,7 +37,8 @@ export const POST = async (req) => {
         const tokenData = {
             id: accountInfo._id,
             userName: accountInfo.userName,
-            userEmail: accountInfo.userEmail
+            userEmail: accountInfo.userEmail,
+        
         }
 
         // create JWT Token

@@ -4,10 +4,11 @@ export function middleware(request) {
     const path = request.nextUrl.pathname;
     const cookie = request.cookies.get(process.env.TOKEN_COOKIE_KEY)?.value || null
 
-    const wrongPaths = path === "/dashboard";
+    const wrongPaths = (path === "/dashboard");
 
-    const publicRoutes = path === "/login" || path === "/signup" || path === "/forgetpassword";
-    const commonRoutes = path === "/";
+    const publicRoutes = (path === "/login" || path === "/signup" || path === "/forgetpassword" || path === "/admin/login" || path === "/admin/signup");
+
+    const commonRoutes = (path === "/");
 
     if ((cookie && publicRoutes) || wrongPaths) {
         return NextResponse.redirect(new URL("/", request.nextUrl));
@@ -24,6 +25,7 @@ export const config = {
         '/login',
         '/signup',
         '/forgetpassword',
-        '/dashboard/(.*)'
+        '/dashboard/(.*)',
+        '/admin/:path*'       
     ]
 }
