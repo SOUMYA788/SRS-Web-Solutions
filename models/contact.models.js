@@ -11,5 +11,5 @@ const ContactSchema = new Schema({
     }
 }, {timestamps:true})
 
-const ContactModel = models.ContactModel || model("ContactModel", ContactSchema)
+const ContactModel = models?.ContactModel || model("ContactModel", ContactSchema)
 export default ContactModel;

@@ -1,3 +1,4 @@
+import dbConnection from "@/middleware/dbConnection";
 import UserModel from "@/models/user.models";
 import { NextResponse } from "next/server";
 
@@ -7,6 +8,8 @@ export const POST = async (req) => {
     const unauthorisedMessage = "You are not authorised to access this data!"
 
     try {
+        await dbConnection();
+        
         // If Login Secreat not matched, means user may be a hacker.
         if (loginSecreat !== process.env.LOGIN_SECRET) { throw new Error(unauthorisedMessage) }
 
