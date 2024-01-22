@@ -1,9 +1,6 @@
 "use client"
-import { deleteUserMessages } from '@/utils/databaseUtils'
 import { dateAndTimeFormatter } from '@/utils/dateAndTimeFormatter'
-import { showErrorToast, showSuccessToast } from '@/utils/showToast'
 import React, { useEffect, useState } from 'react'
-import { IoClose } from 'react-icons/io5'
 
 const MessagesCard = ({ message, allSelected, selectMessages, setSelectMessages }) => {
     const [deleteChecked, setDeleteChecked] = useState(false);
@@ -17,6 +14,7 @@ const MessagesCard = ({ message, allSelected, selectMessages, setSelectMessages 
     useEffect(() => {
         if ((deleteChecked && !messageSelected)) {
             setSelectMessages((value) => [...value, message._id]);
+            console.log(message._id, "from message card");
         } else if ((!deleteChecked && messageSelected)) {
             const filteredMessage = selectMessages?.filter(value => value !== message?._id);
             if (filteredMessage) { setSelectMessages([...filteredMessage]) }

@@ -1,3 +1,5 @@
+"use server"
+
 import dbConnection from "@/middleware/dbConnection";
 import ContactModel from "@/models/contact.models";
 
@@ -25,24 +27,37 @@ export const getUsersMessages = async (userEmail) => {
 }
 
 export const deleteUserMessages = async (messages) => {
-
     try {
         await dbConnection();
 
-        const deletedMessage = messages.length > 0 ? await ContactModel.findByIdAndDelete({ _id: messages }) : await ContactModel.deleteMany({ _id: { $in: [...messages] } });
+        if (!messages.length > 0) {
+            throw new Error("select a message to delete")
+        }
 
-        if (!deletedMessage) { throw new Error("Faild to delete messages") }
-
-        return {
-            success: true,
-            message: "Messages Deleted Succesfully",
-            data: JSON.stringify(deletedMessage)
+        if (messages.length === 1) {
+            const _id = messages[0].toString().trim();
+            console.log(_id, "from final delete method");
+            const deletedMessage = await ContactModel.findByIdAndDelete({_id});
+            if (!deletedMessage) { throw new Error("Faild to delete messages") }
+            return {
+                success: true,
+                message: "Messages Deleted Succesfully",
+                data: JSON.stringify(deletedMessage)
+            }
+        } else if (messages.length > 1) {
+            const deletedMessage = await ContactModel.deleteMany({ _id: { $in: [...messages] } });
+            if (!deletedMessage) { throw new Error("Faild to delete messages") }
+            return {
+                success: true,
+                message: "Messages Deleted Succesfully",
+                data: JSON.stringify(deletedMessage)
+            }
         }
 
     } catch (error) {
         return {
             success: false,
-            message: "Faild to delete messages",
+            message: error.message || "Faild to delete messages",
             data: null
         }
     }
